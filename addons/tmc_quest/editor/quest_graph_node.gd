@@ -23,3 +23,15 @@ func set_quest(new_quest):
     required_checkbox.button_pressed = quest.required
     active_checkbox.button_pressed = quest.active
     hidden_checkbox.button_pressed = quest.hidden
+
+
+func _on_required_checkbox_pressed():
+    quest.required = required_checkbox.button_pressed
+
+
+func _on_active_checkbox_pressed():
+    quest.active = active_checkbox.button_pressed
+
+
+func _on_hidden_checkbox_pressed():
+    quest.hidden = hidden_checkbox.button_pressed

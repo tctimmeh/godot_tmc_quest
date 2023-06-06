@@ -109,3 +109,7 @@ text = "Conditions
 [node name="Subquests" type="Label" parent="."]
 layout_mode = 2
 text = "Subquests"
+
+[connection signal="pressed" from="HBoxContainer/RequiredCheckbox" to="." method="_on_required_checkbox_pressed"]
+[connection signal="pressed" from="HBoxContainer/ActiveCheckbox" to="." method="_on_active_checkbox_pressed"]
+[connection signal="pressed" from="HBoxContainer/HiddenCheckbox" to="." method="_on_hidden_checkbox_pressed"]

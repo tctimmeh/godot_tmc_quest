@@ -27,7 +27,7 @@ func _get_plugin_icon():
     return preload("res://addons/tmc_quest/editor/editor_icon.png")
 
 func _apply_changes():
-    pass
+    graph_edit.save()
 
 func _clear():
     graph_edit.set_quest(null)

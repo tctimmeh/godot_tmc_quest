@@ -44,6 +44,9 @@ func setup_toolbar():
 
     toolbar_hbox.add_child(quest_name_label)
 
+func save():
+    ResourceSaver.save(quest)
+
 func _on_new_quest_button_pressed():
     var new_quest = Quest.new()
     set_quest(new_quest)
