@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://gjn35hm7rppd"]
+
+[ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_edit.gd" id="1_cb1dk"]
+[ext_resource type="Resource" uid="uid://sujtkk176mgm" path="res://debug_quest.tres" id="2_cymkl"]
+
+[node name="QuestGraphEdit" type="GraphEdit"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+right_disconnects = true
+scroll_offset = Vector2(252, 162)
+zoom = 0.75
+zoom_min = 0.25
+zoom_max = 1.0
+zoom_step = 1.1
+minimap_size = Vector2(120, 200)
+script = ExtResource("1_cb1dk")
+quest = ExtResource("2_cymkl")
+metadata/_edit_lock_ = true
+
+[connection signal="connection_request" from="." to="." method="_on_connection_request"]
+[connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
+[connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
