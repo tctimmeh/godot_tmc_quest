@@ -11,20 +11,14 @@ enum SlotType {
 
 enum Slot {
     Parent = 0,
-    Required = 1,
-    Active = 2,
-    Hidden = 3,
-    Events = 4,
-    Conditions = 5,
-    Subquests = 6,
+    Events = 2,
+    Conditions = 3,
+    Subquests = 4,
 }
 
 enum InputPort {
     Parent = 0,
-    Required = 1,
-    Active = 2,
-    Hidden = 3,
-    Events = 4,
+    Events = 1,
 }
 
 enum OutputPort {

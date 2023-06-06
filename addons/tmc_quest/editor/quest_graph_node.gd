@@ -7,9 +7,9 @@ const child_port_color := Color("#22bb11")
 
 @export var quest: Quest: set = set_quest
 
-@onready var required_checkbox := $RequiredCheckbox
-@onready var active_checkbox := $ActiveCheckbox
-@onready var hidden_checkbox := $HiddenCheckbox
+@onready var required_checkbox := %RequiredCheckbox
+@onready var active_checkbox := %ActiveCheckbox
+@onready var hidden_checkbox := %HiddenCheckbox
 
 func _ready():
     set_quest(quest)
