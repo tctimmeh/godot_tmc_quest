@@ -1,4 +1,4 @@
-class_name TaskCondition
+class_name QuestCondition
 extends Resource
 
 @export var name: String
@@ -6,7 +6,7 @@ extends Resource
 @export var active: bool = false
 @export var always: bool = false
 @export var passed = false         # might be best to leave this be variant type
-@export var actions: Array[TaskAction]
+@export var actions: Array[QuestAction]
 
 func succeed():
     if passed:
@@ -14,7 +14,7 @@ func succeed():
     passed = true
     execute_actions()
 
-func add_action(action: TaskAction):
+func add_action(action: QuestAction):
     actions.append(action)
 
 func execute_actions():

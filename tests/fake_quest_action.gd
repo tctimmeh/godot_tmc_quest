@@ -1,4 +1,4 @@
-extends TaskAction
+extends QuestAction
 
 var executed = 0
 

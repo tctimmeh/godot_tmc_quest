@@ -32,7 +32,7 @@ enum OutputPort {
     Subquests = 1,
 }
 
-@export var quest: Task: set = set_quest
+@export var quest: Quest: set = set_quest
 
 var quest_name_label := Label.new()
 
@@ -51,7 +51,7 @@ func setup_toolbar():
     toolbar_hbox.add_child(quest_name_label)
 
 func _on_new_quest_button_pressed():
-    var new_quest = Task.new()
+    var new_quest = Quest.new()
     set_quest(new_quest)
 
 func remove_graph_nodes():
@@ -70,7 +70,7 @@ func set_quest(new_quest):
     create_graph_nodes(quest)
     call_deferred("arrange_nodes")
 
-func create_graph_nodes(quest: Task, parent_node: GraphNode = null):
+func create_graph_nodes(quest: Quest, parent_node: GraphNode = null):
     var quest_node = create_graph_node(quest, Vector2(120, 120))
     add_child(quest_node)
 
@@ -82,10 +82,10 @@ func create_graph_nodes(quest: Task, parent_node: GraphNode = null):
             InputPort.Parent
         )
 
-    for subquest in quest.subtasks:
+    for subquest in quest.subquests:
         create_graph_nodes(subquest, quest_node)
 
-func create_graph_node(quest: Task, position: Vector2 = Vector2(0, 0)) -> GraphNode:
+func create_graph_node(quest: Quest, position: Vector2 = Vector2(0, 0)) -> GraphNode:
     var quest_node = QuestGraphNode.instantiate()
     quest_node.quest = quest
     quest_node.set_meta("quest", quest)
@@ -96,12 +96,12 @@ func create_graph_node(quest: Task, position: Vector2 = Vector2(0, 0)) -> GraphN
 func _on_connection_request(from_node_name, from_port, to_node_name, to_port):
     if to_port == InputPort.Parent:
         var from_node = get_node(str(from_node_name))
-        var from_quest = from_node.get_meta("quest") as Task
+        var from_quest = from_node.get_meta("quest") as Quest
         var to_node = get_node(str(to_node_name))
-        var to_quest = to_node.get_meta("quest") as Task
+        var to_quest = to_node.get_meta("quest") as Quest
         if to_quest.parent:
             return
-        from_quest.add_subtask(to_quest)
+        from_quest.add_subquest(to_quest)
 
     connect_node(from_node_name, from_port, to_node_name, to_port)
 
@@ -117,10 +117,10 @@ func _on_connection_to_empty(from_node_name, from_port, release_position: Vector
         new_subquest(parent_node, release_position_to_grid_position(release_position))
 
 func new_subquest(parent_node: GraphNode, position: Vector2):
-    var parent_quest = parent_node.get_meta("quest") as Task
+    var parent_quest = parent_node.get_meta("quest") as Quest
 
-    var new_quest = Task.new()
-    parent_quest.add_subtask(new_quest)
+    var new_quest = Quest.new()
+    parent_quest.add_subquest(new_quest)
 
     var quest_node = create_graph_node(new_quest, position)
     add_child(quest_node)
@@ -135,8 +135,8 @@ func _on_disconnection_request(from_node_name, from_port, to_node_name, to_port)
     if to_port == InputPort.Parent:
         var from_node = get_node(str(from_node_name))
         var to_node = get_node(str(to_node_name))
-        var from_quest = from_node.get_meta("quest") as Task
-        var to_quest = to_node.get_meta("quest") as Task
-        from_quest.remove_subtask(to_quest)
+        var from_quest = from_node.get_meta("quest") as Quest
+        var to_quest = to_node.get_meta("quest") as Quest
+        from_quest.remove_subquest(to_quest)
 
     disconnect_node(from_node_name, from_port, to_node_name, to_port)

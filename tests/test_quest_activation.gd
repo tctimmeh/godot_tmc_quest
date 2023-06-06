@@ -1,27 +1,27 @@
 extends GutTest
 
-var quest: Task
+var quest: Quest
 
 func before_each():
-    quest = Task.new()
+    quest = Quest.new()
 
-func test_activate_task_activate_own_conditions():
-    var c = TaskCondition.new()
+func test_activate_quest_activate_own_conditions():
+    var c = QuestCondition.new()
     quest.add_condition(c)
     assert_false(c.active)
 
     quest.activate()
     assert_true(c.active)
 
-func test_activate_task_with_inactive_ancestor_does_not_activate_own_conditions():
-    var t1 = Task.new()
-    t1.name = "Task 1"
-    var t2 = Task.new()
-    t2.name = "Task 2"
-    t1.add_subtask(t2)
-    var c = TaskCondition.new()
+func test_activate_quest_with_inactive_ancestor_does_not_activate_own_conditions():
+    var t1 = Quest.new()
+    t1.name = "Quest 1"
+    var t2 = Quest.new()
+    t2.name = "Quest 2"
+    t1.add_subquest(t2)
+    var c = QuestCondition.new()
     t2.add_condition(c)
-    quest.add_subtask(t1)
+    quest.add_subquest(t1)
 
     assert_false(t1.active)
     assert_false(t2.active)
@@ -37,7 +37,7 @@ func test_activate_task_with_inactive_ancestor_does_not_activate_own_conditions(
     assert_false(c.active)
 
 func test_deactivate_disables_own_conditions():
-    var c = TaskCondition.new()
+    var c = QuestCondition.new()
     quest.add_condition(c)
     quest.activate()
 
@@ -48,13 +48,13 @@ func test_deactivate_disables_own_conditions():
     assert_false(c.active)
 
 func test_deactivate_disables_conditions_on_all_subs():
-    var t1 = Task.new()
+    var t1 = Quest.new()
     t1.activate()
-    quest.add_subtask(t1)
+    quest.add_subquest(t1)
 
-    var t2 = Task.new()
-    t1.add_subtask(t2)
-    var c = TaskCondition.new()
+    var t2 = Quest.new()
+    t1.add_subquest(t2)
+    var c = QuestCondition.new()
     t2.add_condition(c)
     t2.activate()
     quest.activate()
@@ -64,17 +64,17 @@ func test_deactivate_disables_conditions_on_all_subs():
     quest.deactivate()
     assert_false(c.active)
 
-func test_adding_condition_to_inactive_task_does_not_activate_condition():
-    var c = TaskCondition.new()
+func test_adding_condition_to_inactive_quest_does_not_activate_condition():
+    var c = QuestCondition.new()
     assert_false(c.active)
 
     quest.add_condition(c)
     assert_false(c.active)
 
-func test_adding_condition_to_active_task_activates_condition():
+func test_adding_condition_to_active_quest_activates_condition():
     quest.activate()
 
-    var c = TaskCondition.new()
+    var c = QuestCondition.new()
     assert_false(c.active)
 
     quest.add_condition(c)

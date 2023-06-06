@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://gjn35hm7rppd"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_edit.gd" id="1_cb1dk"]
-[ext_resource type="Resource" uid="uid://sujtkk176mgm" path="res://debug_quest.tres" id="2_cymkl"]
+[ext_resource type="Resource" uid="uid://bb4whv8dpw4h" path="res://debug_quest.tres" id="2_cymkl"]
 
 [node name="QuestGraphEdit" type="GraphEdit"]
 anchors_preset = 15
@@ -12,7 +12,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 right_disconnects = true
-scroll_offset = Vector2(252, 162)
 zoom = 0.75
 zoom_min = 0.25
 zoom_max = 1.0

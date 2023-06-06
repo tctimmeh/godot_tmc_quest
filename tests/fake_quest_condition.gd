@@ -1,4 +1,4 @@
-extends TaskCondition
+extends QuestCondition
 
 var checked = 0
 

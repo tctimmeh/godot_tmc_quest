@@ -1,11 +1,11 @@
 extends GutTest
 
-var ExampleCondition = load("res://tests/fake_task_condition.gd")
+var ExampleCondition = load("res://tests/fake_quest_condition.gd")
 
-var quest: Task
+var quest: Quest
 
 func before_each():
-    quest = Task.new()
+    quest = Quest.new()
 
 func test_advance_checks_own_conditions():
     var c = ExampleCondition.new()
@@ -17,10 +17,10 @@ func test_advance_checks_own_conditions():
     assert_true(bool(c.checked))
 
 func test_advance_checks_conditions_of_subs():
-    var t1 = Task.new()
+    var t1 = Quest.new()
     t1.activate()
 
-    quest.add_subtask(t1)
+    quest.add_subquest(t1)
     quest.activate()
 
     var c = ExampleCondition.new()
@@ -29,10 +29,10 @@ func test_advance_checks_conditions_of_subs():
     quest.advance()
     assert_true(bool(c.checked))
 
-func test_advance_inactive_task_does_not_checks_conditions_of_or_subs():
-    var t1 = Task.new()
+func test_advance_inactive_quest_does_not_checks_conditions_of_or_subs():
+    var t1 = Quest.new()
     t1.activate()
-    quest.add_subtask(t1)
+    quest.add_subquest(t1)
 
     var c = ExampleCondition.new()
     quest.add_condition(c)

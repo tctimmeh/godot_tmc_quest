@@ -1,7 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://dwpngkswsh5ub"]
+[gd_scene load_steps=4 format=3 uid="uid://dwpngkswsh5ub"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_node.gd" id="1_txso8"]
-[ext_resource type="Resource" uid="uid://sujtkk176mgm" path="res://debug_quest.tres" id="2_wbvtj"]
+[ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="2_cmkdr"]
+
+[sub_resource type="Resource" id="Resource_xpfgt"]
+script = ExtResource("2_cmkdr")
+name = "Mr. Murphys Bungalow"
+description = "Mr. Murphy needs a bungalow at once! Fetch it for him."
+subquests = Array[ExtResource("2_cmkdr")]([])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
+required = true
+active = true
+hidden = false
+tracking = false
+complete = false
+outcome = 0
 
 [node name="QuestGraphNode" type="GraphNode"]
 offset_right = 36.0
@@ -72,7 +85,7 @@ slot/6/right_color = Color(0.133333, 0.733333, 0.0666667, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
 script = ExtResource("1_txso8")
-quest = ExtResource("2_wbvtj")
+quest = SubResource("Resource_xpfgt")
 
 [node name="ParentLabel" type="Label" parent="."]
 layout_mode = 2

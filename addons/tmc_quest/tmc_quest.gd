@@ -40,4 +40,4 @@ func _edit(quest):
     graph_edit.set_quest(quest)
 
 func _handles(object):
-    return object is Task
+    return object is Quest

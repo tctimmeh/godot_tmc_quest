@@ -1,4 +1,4 @@
-class_name TaskAction
+class_name QuestAction
 extends Resource
 
 func execute():

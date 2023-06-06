@@ -1,16 +1,16 @@
 extends GutTest
 
-var ExampleAction = load("res://tests/fake_task_action.gd")
+var ExampleAction = load("res://tests/fake_quest_action.gd")
 
 func test_succeed_sets_value_true():
-    var c = TaskCondition.new()
+    var c = QuestCondition.new()
     assert_false(c.passed)
 
     c.succeed()
     assert_true(c.passed)
 
 func test_succeed_executes_actions():
-    var c = TaskCondition.new()
+    var c = QuestCondition.new()
     var a = ExampleAction.new()
     c.add_action(a)
 
@@ -19,7 +19,7 @@ func test_succeed_executes_actions():
     assert_true(bool(a.executed))
 
 func test_succeed_only_executes_actions_once():
-    var c = TaskCondition.new()
+    var c = QuestCondition.new()
     var a = ExampleAction.new()
     c.add_action(a)
 
