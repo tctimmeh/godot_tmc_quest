@@ -33,7 +33,9 @@ enum ContextMenuItems {
 
 @export var quest: Quest: set = set_quest
 
-@onready var popup_menu := %PopupMenu
+@onready var context_menu := %ContextMenu
+@onready var rename_dialog := %RenameDialog
+@onready var new_name_edit := %NewNameEdit
 
 var selected_nodes = {}
 var quest_name_label := Label.new()
@@ -149,23 +151,42 @@ func _on_disconnection_request(from_node_name, from_port, to_node_name, to_port)
 
 
 func _on_popup_request(position:Vector2):
-    popup_menu.set_item_disabled(ContextMenuItems.Rename, not bool(selected_nodes.size()))
-    popup_menu.set_item_disabled(ContextMenuItems.Delete, not bool(selected_nodes.size()))
+    context_menu.set_item_disabled(ContextMenuItems.Rename, not bool(selected_nodes.size()))
+    context_menu.set_item_disabled(ContextMenuItems.Delete, not bool(selected_nodes.size()))
 
-    popup_menu.position = position
-    popup_menu.popup()
+    context_menu.position = position
+    context_menu.popup()
 
 func _on_popup_menu_id_pressed(id:int):
     match id:
         ContextMenuItems.Rename:
-            prints('rename')
+            if not selected_nodes.size():
+                return
+            if selected_nodes.size() > 1:
+                $RenameTooManyDialog.popup_centered()
+                return
+            show_rename_dialog(selected_nodes.keys()[0])
         ContextMenuItems.Delete:
             delete_nodes(selected_nodes.keys())
+
+func show_rename_dialog(node):
+    var quest = node.get_meta("quest")
+    new_name_edit.text = quest.name
+    new_name_edit.grab_focus()
+    new_name_edit.select_all()
+    rename_dialog.position = context_menu.position
+    rename_dialog.set_meta("node", node)
+    rename_dialog.popup()
+
+func rename_node(node, new_name):
+    node.title = new_name
+    var quest = node.get_meta("quest")
+    quest.name = new_name
 
 func delete_node(node):
     var quest = node.get_meta("quest")
     if quest.parent:
-        quest.parent.remove_subquest(quest)
+        quest.parent.get_ref().remove_subquest(quest)
     for subquest in quest.subquests:
         subquest.parent = null
 
@@ -191,3 +212,17 @@ func _on_node_selected(node:Node):
 
 func _on_node_deselected(node:Node):
     selected_nodes.erase(node)
+
+func _on_cancel_rename_button_pressed():
+    rename_dialog.hide()
+
+func _on_ok_rename_button_pressed():
+    var new_name = new_name_edit.text
+    var node = rename_dialog.get_meta("node")
+    rename_node(node, new_name)
+    rename_dialog.hide()
+
+
+func _on_new_name_edit_gui_input(event):
+    if event is InputEventKey and event.keycode == KEY_ENTER:
+        _on_ok_rename_button_pressed()

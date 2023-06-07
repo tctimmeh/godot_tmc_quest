@@ -19,6 +19,8 @@ func set_quest(new_quest):
     if not quest or not is_inside_tree():
         return
 
+    theme_type_variation = "QuestGraphNode" if quest.parent else "RootQuestGraphNode"
+
     title = quest.name
     required_checkbox.button_pressed = quest.required
     active_checkbox.button_pressed = quest.active

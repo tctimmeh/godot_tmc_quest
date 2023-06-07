@@ -2,7 +2,6 @@
 
 ## TODO::
 
-- Delete quests
 - Rename quest
 - Conditions...
 - Actions...

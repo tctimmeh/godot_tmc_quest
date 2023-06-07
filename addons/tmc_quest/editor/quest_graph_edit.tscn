@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://gjn35hm7rppd"]
+[gd_scene load_steps=4 format=3 uid="uid://gjn35hm7rppd"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_edit.gd" id="1_cb1dk"]
 [ext_resource type="Resource" uid="uid://bb4whv8dpw4h" path="res://debug_quest.tres" id="2_cymkl"]
+[ext_resource type="Theme" uid="uid://ddnybqx45hg3w" path="res://addons/tmc_quest/editor/editor_theme.tres" id="3_x7ojg"]
 
 [node name="QuestGraphEdit" type="GraphEdit"]
 anchors_preset = 15
@@ -11,20 +12,21 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("3_x7ojg")
 right_disconnects = true
 zoom = 0.75
 zoom_min = 0.25
 zoom_max = 1.0
 zoom_step = 1.1
-minimap_size = Vector2(120, 200)
+minimap_enabled = false
 script = ExtResource("1_cb1dk")
 quest = ExtResource("2_cymkl")
 metadata/_edit_lock_ = true
 
-[node name="PopupMenu" type="PopupMenu" parent="."]
+[node name="ContextMenu" type="PopupMenu" parent="."]
 unique_name_in_owner = true
-size = Vector2i(92, 66)
-visible = true
+position = Vector2i(375, 10)
+size = Vector2i(94, 60)
 hide_on_checkable_item_selection = false
 item_count = 3
 item_0/text = "Rename"
@@ -35,10 +37,61 @@ item_1/separator = true
 item_2/text = "Delete"
 item_2/id = 2
 
+[node name="RenameDialog" type="PopupPanel" parent="."]
+unique_name_in_owner = true
+position = Vector2i(500, 10)
+size = Vector2i(220, 105)
+theme_type_variation = &"BorderlessDialog"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RenameDialog"]
+offset_left = 10.0
+offset_top = 5.0
+offset_right = 210.0
+offset_bottom = 95.0
+
+[node name="Label" type="Label" parent="RenameDialog/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "New Name:"
+
+[node name="NewNameEdit" type="LineEdit" parent="RenameDialog/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RenameDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="CancelRenameButton" type="Button" parent="RenameDialog/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 14
+text = "Cancel"
+
+[node name="OkRenameButton" type="Button" parent="RenameDialog/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 14
+text = "OK"
+
+[node name="RenameTooManyDialog" type="AcceptDialog" parent="."]
+title = "Rename Too Many"
+position = Vector2i(50, 200)
+size = Vector2i(242, 82)
+unresizable = true
+borderless = true
+theme_type_variation = &"BorderlessDialog"
+dialog_text = "Can only rename 1 at a time."
+
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
 [connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
 [connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
 [connection signal="node_selected" from="." to="." method="_on_node_selected"]
 [connection signal="popup_request" from="." to="." method="_on_popup_request"]
-[connection signal="id_pressed" from="PopupMenu" to="." method="_on_popup_menu_id_pressed"]
+[connection signal="id_pressed" from="ContextMenu" to="." method="_on_popup_menu_id_pressed"]
+[connection signal="close_requested" from="RenameDialog" to="." method="_on_rename_dialog_close_requested"]
+[connection signal="gui_input" from="RenameDialog/VBoxContainer/NewNameEdit" to="." method="_on_new_name_edit_gui_input"]
+[connection signal="pressed" from="RenameDialog/VBoxContainer/HBoxContainer/CancelRenameButton" to="." method="_on_cancel_rename_button_pressed"]
+[connection signal="pressed" from="RenameDialog/VBoxContainer/HBoxContainer/OkRenameButton" to="." method="_on_ok_rename_button_pressed"]
