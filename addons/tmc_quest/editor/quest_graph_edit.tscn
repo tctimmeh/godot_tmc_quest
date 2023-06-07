@@ -21,6 +21,24 @@ script = ExtResource("1_cb1dk")
 quest = ExtResource("2_cymkl")
 metadata/_edit_lock_ = true
 
+[node name="PopupMenu" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+size = Vector2i(92, 66)
+visible = true
+hide_on_checkable_item_selection = false
+item_count = 3
+item_0/text = "Rename"
+item_0/id = 0
+item_1/text = ""
+item_1/id = 1
+item_1/separator = true
+item_2/text = "Delete"
+item_2/id = 2
+
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
 [connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
+[connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
+[connection signal="node_selected" from="." to="." method="_on_node_selected"]
+[connection signal="popup_request" from="." to="." method="_on_popup_request"]
+[connection signal="id_pressed" from="PopupMenu" to="." method="_on_popup_menu_id_pressed"]

@@ -26,8 +26,16 @@ enum OutputPort {
     Subquests = 1,
 }
 
+enum ContextMenuItems {
+    Rename = 0,
+    Delete = 2,
+}
+
 @export var quest: Quest: set = set_quest
 
+@onready var popup_menu := %PopupMenu
+
+var selected_nodes = {}
 var quest_name_label := Label.new()
 
 func _ready():
@@ -65,6 +73,7 @@ func set_quest(new_quest):
 
     quest_name_label.text = new_quest.name
     create_graph_nodes(quest)
+    selected_nodes.clear()
     call_deferred("arrange_nodes")
 
 func create_graph_nodes(quest: Quest, parent_node: GraphNode = null):
@@ -137,3 +146,48 @@ func _on_disconnection_request(from_node_name, from_port, to_node_name, to_port)
         from_quest.remove_subquest(to_quest)
 
     disconnect_node(from_node_name, from_port, to_node_name, to_port)
+
+
+func _on_popup_request(position:Vector2):
+    popup_menu.set_item_disabled(ContextMenuItems.Rename, not bool(selected_nodes.size()))
+    popup_menu.set_item_disabled(ContextMenuItems.Delete, not bool(selected_nodes.size()))
+
+    popup_menu.position = position
+    popup_menu.popup()
+
+func _on_popup_menu_id_pressed(id:int):
+    match id:
+        ContextMenuItems.Rename:
+            prints('rename')
+        ContextMenuItems.Delete:
+            delete_nodes(selected_nodes.keys())
+
+func delete_node(node):
+    var quest = node.get_meta("quest")
+    if quest.parent:
+        quest.parent.remove_subquest(quest)
+    for subquest in quest.subquests:
+        subquest.parent = null
+
+    var connections = get_connection_list()
+    for connection in connections:
+        if connection['from'] == node.name or connection['to'] == node.name:
+            disconnect_node(
+                connection['from'],
+                connection['from_port'],
+                connection['to'],
+                connection['to_port'],
+            )
+
+    selected_nodes.erase(node)
+    node.queue_free()
+
+func delete_nodes(nodes):
+    for node in nodes:
+        delete_node(node)
+
+func _on_node_selected(node:Node):
+    selected_nodes[node] = true
+
+func _on_node_deselected(node:Node):
+    selected_nodes.erase(node)
