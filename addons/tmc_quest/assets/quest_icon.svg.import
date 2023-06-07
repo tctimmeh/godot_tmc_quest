@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpudmfvnylpmg"
-path="res://.godot/imported/editor_icon.png-79d292967648c3d3289f400b3d00e994.ctex"
+uid="uid://uvydx1q10w6b"
+path="res://.godot/imported/quest_icon.svg-bdbca32ff45f8218a37151f24b7d1965.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/tmc_quest/editor/editor_icon.png"
-dest_files=["res://.godot/imported/editor_icon.png-79d292967648c3d3289f400b3d00e994.ctex"]
+source_file="res://addons/tmc_quest/assets/quest_icon.svg"
+dest_files=["res://.godot/imported/quest_icon.svg-bdbca32ff45f8218a37151f24b7d1965.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

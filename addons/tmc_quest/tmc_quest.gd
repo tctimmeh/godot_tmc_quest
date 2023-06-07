@@ -24,7 +24,7 @@ func _get_plugin_name():
     return "Quest"
 
 func _get_plugin_icon():
-    return preload("res://addons/tmc_quest/editor/editor_icon.png")
+    return preload("res://addons/tmc_quest/assets/quest_icon.svg")
 
 func _apply_changes():
     graph_edit.save()

@@ -1,3 +1,4 @@
+@icon("res://addons/tmc_quest/assets/quest_icon.svg")
 class_name Quest
 extends Resource
 
