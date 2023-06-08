@@ -16,6 +16,13 @@ const child_port_color := Color("#22bb11")
 func _ready():
     set_condition(condition)
 
+func _process(delta):
+    if not condition:
+        return
+    required_checkbox.button_pressed = condition.required
+    active_checkbox.button_pressed = condition.active
+    always_checkbox.button_pressed = condition.always
+
 func set_condition(new_condition):
     condition = new_condition
     if not condition or not is_inside_tree():

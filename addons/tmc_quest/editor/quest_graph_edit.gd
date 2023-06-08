@@ -120,7 +120,7 @@ func _on_new_quest_button_pressed():
 func _on_save_button_pressed():
     save()
 
-func remove_graph_nodes():
+func clear_graph_nodes():
     for child in get_children():
         if child is GraphNode:
             remove_child(child)
@@ -132,7 +132,7 @@ func set_quest(new_quest):
 
     quest = new_quest
     quest.set_subquest_parents()
-    remove_graph_nodes()
+    clear_graph_nodes()
     clear_connections()
     create_quest_graph_nodes(quest)
     selected_nodes.clear()

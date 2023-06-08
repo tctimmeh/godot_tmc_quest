@@ -1,7 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://gjn35hm7rppd"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_edit.gd" id="1_cb1dk"]
-[ext_resource type="Resource" uid="uid://bb4whv8dpw4h" path="res://debug_quest.tres" id="2_cymkl"]
 [ext_resource type="Theme" uid="uid://ddnybqx45hg3w" path="res://addons/tmc_quest/editor/editor_theme.tres" id="3_x7ojg"]
 
 [node name="QuestGraphEdit" type="GraphEdit"]
@@ -20,7 +19,7 @@ zoom_max = 1.0
 zoom_step = 1.1
 minimap_enabled = false
 script = ExtResource("1_cb1dk")
-quest = ExtResource("2_cymkl")
+quest = null
 metadata/_edit_lock_ = true
 
 [node name="ContextMenu" type="PopupMenu" parent="."]
@@ -99,9 +98,6 @@ item_0/id = 0
 [connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
 [connection signal="node_selected" from="." to="." method="_on_node_selected"]
 [connection signal="popup_request" from="." to="." method="_on_popup_request"]
-[connection signal="gui_input" from="QuestGraphNode" to="QuestGraphNode" method="_on_gui_input" flags=18]
-[connection signal="gui_input" from="@QuestGraphNode@18400" to="@QuestGraphNode@18400" method="_on_gui_input" flags=18]
-[connection signal="gui_input" from="@QuestGraphNode@18401" to="@QuestGraphNode@18401" method="_on_gui_input" flags=18]
 [connection signal="id_pressed" from="ContextMenu" to="." method="_on_popup_menu_id_pressed"]
 [connection signal="close_requested" from="RenameDialog" to="." method="_on_rename_dialog_close_requested"]
 [connection signal="gui_input" from="RenameDialog/VBoxContainer/NewNameEdit" to="." method="_on_new_name_edit_gui_input"]
