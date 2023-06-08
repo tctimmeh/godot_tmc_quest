@@ -1,3 +1,4 @@
+@tool
 @icon("res://addons/tmc_quest/assets/quest_icon.svg")
 class_name Quest
 extends Resource
@@ -29,12 +30,17 @@ func _to_string():
 
 func set_subquests(quests: Array[Quest]):
     subquests = quests
+    set_subquest_parents()
+
+func set_subquest_parents():
     var weak_self = weakref(self)
     for quest in subquests:
         quest.parent = weak_self
+        quest.set_subquest_parents()
 
 func add_subquest(quest):
-    quest.parent = self
+    var weak_self = weakref(self)
+    quest.parent = weak_self
     subquests.append(quest)
 
 func remove_subquest(quest):

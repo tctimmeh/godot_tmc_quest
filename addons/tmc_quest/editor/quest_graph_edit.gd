@@ -38,10 +38,11 @@ enum ContextMenuItems {
 @onready var new_name_edit := %NewNameEdit
 
 var selected_nodes = {}
-var quest_name_label := Label.new()
+var save_dialog: EditorFileDialog
 
 func _ready():
     setup_toolbar()
+    create_save_dialog()
 
 func setup_toolbar():
     var toolbar_hbox = get_zoom_hbox()
@@ -52,31 +53,58 @@ func setup_toolbar():
     new_button.pressed.connect(_on_new_quest_button_pressed)
     toolbar_hbox.add_child(new_button)
 
-    toolbar_hbox.add_child(quest_name_label)
+    var save_button := Button.new()
+    save_button.name = "SaveButton"
+    save_button.text = "Save"
+    save_button.pressed.connect(_on_save_button_pressed)
+    toolbar_hbox.add_child(save_button)
+
+func create_save_dialog():
+    save_dialog = EditorFileDialog.new()
+    save_dialog.name = "SaveDialog"
+    save_dialog.title = "Save Quest"
+    save_dialog.dialog_hide_on_ok = true
+    save_dialog.display_mode = EditorFileDialog.DISPLAY_LIST
+    save_dialog.file_mode = EditorFileDialog.FILE_MODE_SAVE_FILE
+    save_dialog.add_filter("*.tres", "Resources")
+    save_dialog.size = Vector2(800, 600)
+    save_dialog.file_selected.connect(_on_save_dialog_file_selected)
+    add_child(save_dialog)
 
 func save():
+    if not quest.resource_path.length():
+        save_dialog.popup_centered()
+        return
+    ResourceSaver.save(quest)
+
+func _on_save_dialog_file_selected(path):
+    quest.resource_path = path
     ResourceSaver.save(quest)
 
 func _on_new_quest_button_pressed():
     var new_quest = Quest.new()
     set_quest(new_quest)
 
+func _on_save_button_pressed():
+    save()
+
 func remove_graph_nodes():
     for child in get_children():
         if child is GraphNode:
+            remove_child(child)
             child.queue_free()
 
 func set_quest(new_quest):
-    remove_graph_nodes()
-    clear_connections()
-    quest = new_quest
-    if not quest:
+    if not new_quest:
         return
 
-    quest_name_label.text = new_quest.name
+    quest = new_quest
+    quest.set_subquest_parents()
+    remove_graph_nodes()
+    clear_connections()
     create_graph_nodes(quest)
     selected_nodes.clear()
-    call_deferred("arrange_nodes")
+    arrange_nodes()
 
 func create_graph_nodes(quest: Quest, parent_node: GraphNode = null):
     var quest_node = create_graph_node(quest, Vector2(120, 120))
@@ -93,7 +121,7 @@ func create_graph_nodes(quest: Quest, parent_node: GraphNode = null):
     for subquest in quest.subquests:
         create_graph_nodes(subquest, quest_node)
 
-func create_graph_node(quest: Quest, position: Vector2 = Vector2(0, 0)) -> GraphNode:
+func create_graph_node(quest: Quest, position: Vector2 = Vector2(100, 100)) -> GraphNode:
     var quest_node = QuestGraphNode.instantiate()
     quest_node.quest = quest
     quest_node.set_meta("quest", quest)
@@ -148,7 +176,6 @@ func _on_disconnection_request(from_node_name, from_port, to_node_name, to_port)
         from_quest.remove_subquest(to_quest)
 
     disconnect_node(from_node_name, from_port, to_node_name, to_port)
-
 
 func _on_popup_request(position:Vector2):
     context_menu.set_item_disabled(ContextMenuItems.Rename, not bool(selected_nodes.size()))
@@ -221,7 +248,6 @@ func _on_ok_rename_button_pressed():
     var node = rename_dialog.get_meta("node")
     rename_node(node, new_name)
     rename_dialog.hide()
-
 
 func _on_new_name_edit_gui_input(event):
     if event is InputEventKey and event.keycode == KEY_ENTER:

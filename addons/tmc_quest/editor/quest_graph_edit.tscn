@@ -26,7 +26,7 @@ metadata/_edit_lock_ = true
 [node name="ContextMenu" type="PopupMenu" parent="."]
 unique_name_in_owner = true
 position = Vector2i(375, 10)
-size = Vector2i(94, 60)
+size = Vector2i(94, 66)
 hide_on_checkable_item_selection = false
 item_count = 3
 item_0/text = "Rename"
@@ -78,7 +78,7 @@ text = "OK"
 [node name="RenameTooManyDialog" type="AcceptDialog" parent="."]
 title = "Rename Too Many"
 position = Vector2i(50, 200)
-size = Vector2i(242, 82)
+size = Vector2i(242, 83)
 unresizable = true
 borderless = true
 theme_type_variation = &"BorderlessDialog"

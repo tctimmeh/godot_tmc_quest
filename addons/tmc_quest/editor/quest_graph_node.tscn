@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwpngkswsh5ub"]
+[gd_scene load_steps=4 format=3 uid="uid://dwpngkswsh5ub"]
 
-[ext_resource type="Theme" uid="uid://ddnybqx45hg3w" path="res://addons/tmc_quest/editor/editor_theme.tres" id="1_8mnn2"]
 [ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_node.gd" id="1_txso8"]
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="2_cmkdr"]
 
@@ -21,8 +20,7 @@ outcome = 0
 offset_right = 36.0
 offset_bottom = 54.0
 mouse_filter = 1
-theme = ExtResource("1_8mnn2")
-theme_type_variation = &"QuestGraphNode"
+theme_type_variation = &"RootQuestGraphNode"
 title = "Mr. Murphys Bungalow"
 slot/0/left_enabled = true
 slot/0/left_type = 1
