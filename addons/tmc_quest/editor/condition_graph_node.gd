@@ -11,7 +11,7 @@ const child_port_color := Color("#22bb11")
 
 @onready var required_checkbox := %RequiredCheckbox
 @onready var active_checkbox := %ActiveCheckbox
-@onready var always_checkbox := %HiddenCheckbox
+@onready var always_checkbox := %AlwaysCheckbox
 
 func _ready():
     set_condition(condition)
@@ -35,13 +35,13 @@ func _on_active_checkbox_pressed():
     condition.active = active_checkbox.button_pressed
 
 
-func _on_hidden_checkbox_pressed():
-    condition.always = always_checkbox.button_pressed
-
-
 func _on_gui_input(event:InputEvent):
     if event is InputEventMouseButton \
             and event.pressed \
             and event.button_index == MOUSE_BUTTON_RIGHT \
             :
         context_requested.emit()
+
+
+func _on_always_checkbox_pressed():
+    condition.always = always_checkbox.button_pressed

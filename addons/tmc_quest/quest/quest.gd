@@ -52,6 +52,10 @@ func add_condition(condition):
     if active and is_branch_active():
         condition.activate()
 
+func remove_condition(condition):
+    condition.deactivate()
+    conditions.erase(condition)
+
 func is_branch_active():
 # Is this branch of the quest tree fully active (this and all ancestors active)
     if not active:
@@ -60,7 +64,7 @@ func is_branch_active():
     if not parent:
         return active
 
-    return parent.is_branch_active()
+    return parent.get_ref().is_branch_active()
 
 func activate_conditions():
     for condition in conditions:

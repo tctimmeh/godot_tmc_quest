@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dwpngkswsh5ub"]
+[gd_scene load_steps=5 format=3 uid="uid://dwpngkswsh5ub"]
 
+[ext_resource type="Theme" uid="uid://ddnybqx45hg3w" path="res://addons/tmc_quest/editor/editor_theme.tres" id="1_liefp"]
 [ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_node.gd" id="1_txso8"]
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="2_cmkdr"]
 
@@ -20,7 +21,8 @@ outcome = 0
 offset_right = 36.0
 offset_bottom = 54.0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"RootQuestGraphNode"
+theme = ExtResource("1_liefp")
+theme_type_variation = &"QuestGraphNode"
 title = "Mr. Murphys Bungalow"
 slot/0/left_enabled = true
 slot/0/left_type = 1
@@ -41,7 +43,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 slot/2/left_enabled = true
-slot/2/left_type = 2
+slot/2/left_type = 4
 slot/2/left_color = Color(0.866667, 0.12549, 0.12549, 1)
 slot/2/left_icon = null
 slot/2/right_enabled = false
@@ -76,11 +78,13 @@ text = "Parent"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
 
 [node name="RequiredCheckbox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 6
 tooltip_text = "Required"
 button_pressed = true
 text = "R"
@@ -88,6 +92,7 @@ text = "R"
 [node name="ActiveCheckbox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 6
 tooltip_text = "Active"
 button_pressed = true
 text = "A"
@@ -95,6 +100,7 @@ text = "A"
 [node name="HiddenCheckbox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 6
 tooltip_text = "Hidden"
 text = "H"
 
@@ -106,10 +112,12 @@ text = "Events"
 layout_mode = 2
 text = "Conditions
 "
+horizontal_alignment = 2
 
 [node name="Subquests" type="Label" parent="."]
 layout_mode = 2
 text = "Subquests"
+horizontal_alignment = 2
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="pressed" from="HBoxContainer/RequiredCheckbox" to="." method="_on_required_checkbox_pressed"]

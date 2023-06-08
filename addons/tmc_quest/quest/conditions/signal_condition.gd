@@ -1,3 +1,4 @@
+@icon("res://addons/tmc_quest/assets/condition_icon.svg")
 class_name SignalQuestCondition
 extends QuestCondition
 

@@ -16,6 +16,11 @@ const child_port_color := Color("#22bb11")
 func _ready():
     set_quest(quest)
 
+func _process(delta):
+    required_checkbox.button_pressed = quest.required
+    active_checkbox.button_pressed = quest.active
+    hidden_checkbox.button_pressed = quest.hidden
+
 func set_quest(new_quest):
     quest = new_quest
     if not quest or not is_inside_tree():

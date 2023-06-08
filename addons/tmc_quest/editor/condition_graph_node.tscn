@@ -1,21 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dr4lkhybyyu7r"]
+[gd_scene load_steps=3 format=3 uid="uid://dr4lkhybyyu7r"]
 
 [ext_resource type="Theme" uid="uid://ddnybqx45hg3w" path="res://addons/tmc_quest/editor/editor_theme.tres" id="1_8mwpp"]
-[ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_node.gd" id="1_aua2q"]
-[ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="2_8xrs7"]
-
-[sub_resource type="Resource" id="Resource_xpfgt"]
-script = ExtResource("2_8xrs7")
-name = "Mr. Murphys Bungalow"
-description = "Mr. Murphy needs a bungalow at once! Fetch it for him."
-subquests = Array[ExtResource("2_8xrs7")]([])
-conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
-required = true
-active = true
-hidden = false
-tracking = false
-complete = false
-outcome = 0
+[ext_resource type="Script" path="res://addons/tmc_quest/editor/condition_graph_node.gd" id="2_xoxh7"]
 
 [node name="ConditionGraphNode" type="GraphNode"]
 offset_right = 36.0
@@ -25,8 +11,8 @@ theme = ExtResource("1_8mwpp")
 theme_type_variation = &"QuestConditionGraphNode"
 title = "Mr. Murphys Bungalow"
 slot/0/left_enabled = true
-slot/0/left_type = 1
-slot/0/left_color = Color(0.133333, 0.733333, 0.0666667, 1)
+slot/0/left_type = 2
+slot/0/left_color = Color(0, 0.6, 1, 1)
 slot/0/left_icon = null
 slot/0/right_enabled = false
 slot/0/right_type = 0
@@ -47,12 +33,11 @@ slot/2/left_type = 0
 slot/2/left_color = Color(1, 1, 1, 1)
 slot/2/left_icon = null
 slot/2/right_enabled = true
-slot/2/right_type = 2
+slot/2/right_type = 3
 slot/2/right_color = Color(0.866667, 0.12549, 0.12549, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
-script = ExtResource("1_aua2q")
-quest = SubResource("Resource_xpfgt")
+script = ExtResource("2_xoxh7")
 
 [node name="QuestLabel" type="Label" parent="."]
 layout_mode = 2
@@ -60,11 +45,13 @@ text = "Quest"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
 
 [node name="RequiredCheckbox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 6
 tooltip_text = "Required"
 button_pressed = true
 text = "R"
@@ -72,6 +59,7 @@ text = "R"
 [node name="ActiveCheckbox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 6
 tooltip_text = "Active"
 button_pressed = true
 text = "A"
@@ -79,6 +67,7 @@ text = "A"
 [node name="AlwaysCheckbox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 6
 tooltip_text = "Always"
 text = "A"
 
@@ -89,4 +78,4 @@ text = "Actions"
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="pressed" from="HBoxContainer/RequiredCheckbox" to="." method="_on_required_checkbox_pressed"]
 [connection signal="pressed" from="HBoxContainer/ActiveCheckbox" to="." method="_on_active_checkbox_pressed"]
-[connection signal="pressed" from="HBoxContainer/AlwaysCheckbox" to="." method="_on_hidden_checkbox_pressed"]
+[connection signal="pressed" from="HBoxContainer/AlwaysCheckbox" to="." method="_on_always_checkbox_pressed"]

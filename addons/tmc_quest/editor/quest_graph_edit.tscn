@@ -14,7 +14,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("3_x7ojg")
 right_disconnects = true
-scroll_offset = Vector2(-298.75, 0)
 zoom = 0.75
 zoom_min = 0.25
 zoom_max = 1.0
@@ -27,7 +26,7 @@ metadata/_edit_lock_ = true
 [node name="ContextMenu" type="PopupMenu" parent="."]
 unique_name_in_owner = true
 position = Vector2i(375, 10)
-size = Vector2i(94, 66)
+size = Vector2i(94, 77)
 hide_on_checkable_item_selection = false
 item_count = 3
 item_0/text = "Rename"
@@ -41,7 +40,7 @@ item_2/id = 2
 [node name="RenameDialog" type="PopupPanel" parent="."]
 unique_name_in_owner = true
 position = Vector2i(500, 10)
-size = Vector2i(220, 105)
+size = Vector2i(220, 109)
 theme_type_variation = &"BorderlessDialog"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RenameDialog"]
@@ -77,13 +76,22 @@ theme_override_font_sizes/font_size = 14
 text = "OK"
 
 [node name="RenameTooManyDialog" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
 title = "Rename Too Many"
-position = Vector2i(50, 200)
-size = Vector2i(242, 83)
+position = Vector2i(50, 50)
+size = Vector2i(242, 89)
 unresizable = true
 borderless = true
 theme_type_variation = &"BorderlessDialog"
 dialog_text = "Can only rename 1 at a time."
+
+[node name="TypeSelectMenu" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+position = Vector2i(750, 10)
+size = Vector2i(96, 35)
+item_count = 1
+item_0/text = "Type List"
+item_0/id = 0
 
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
@@ -91,8 +99,12 @@ dialog_text = "Can only rename 1 at a time."
 [connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
 [connection signal="node_selected" from="." to="." method="_on_node_selected"]
 [connection signal="popup_request" from="." to="." method="_on_popup_request"]
+[connection signal="gui_input" from="QuestGraphNode" to="QuestGraphNode" method="_on_gui_input" flags=18]
+[connection signal="gui_input" from="@QuestGraphNode@18400" to="@QuestGraphNode@18400" method="_on_gui_input" flags=18]
+[connection signal="gui_input" from="@QuestGraphNode@18401" to="@QuestGraphNode@18401" method="_on_gui_input" flags=18]
 [connection signal="id_pressed" from="ContextMenu" to="." method="_on_popup_menu_id_pressed"]
 [connection signal="close_requested" from="RenameDialog" to="." method="_on_rename_dialog_close_requested"]
 [connection signal="gui_input" from="RenameDialog/VBoxContainer/NewNameEdit" to="." method="_on_new_name_edit_gui_input"]
 [connection signal="pressed" from="RenameDialog/VBoxContainer/HBoxContainer/CancelRenameButton" to="." method="_on_cancel_rename_button_pressed"]
 [connection signal="pressed" from="RenameDialog/VBoxContainer/HBoxContainer/OkRenameButton" to="." method="_on_ok_rename_button_pressed"]
+[connection signal="index_pressed" from="TypeSelectMenu" to="." method="_on_type_select_menu_index_pressed"]

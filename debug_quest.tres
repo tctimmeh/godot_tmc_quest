@@ -1,19 +1,7 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=4 format=3 uid="uid://bb4whv8dpw4h"]
+[gd_resource type="Resource" script_class="Quest" load_steps=6 format=3 uid="uid://bb4whv8dpw4h"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="1_g8x8d"]
-
-[sub_resource type="Resource" id="Resource_abdby"]
-script = ExtResource("1_g8x8d")
-name = "What murphy???"
-description = "Waht? Murphy??"
-subquests = Array[ExtResource("1_g8x8d")]([])
-conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
-required = true
-active = true
-hidden = false
-tracking = false
-complete = false
-outcome = 0
+[ext_resource type="Script" path="res://addons/tmc_quest/quest/conditions/signal_condition.gd" id="2_1pjhk"]
 
 [sub_resource type="Resource" id="Resource_f1xgu"]
 script = ExtResource("1_g8x8d")
@@ -28,11 +16,32 @@ tracking = false
 complete = false
 outcome = 0
 
+[sub_resource type="Resource" id="Resource_70sdd"]
+script = ExtResource("2_1pjhk")
+required = true
+active = true
+always = false
+passed = false
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+
+[sub_resource type="Resource" id="Resource_h3nsu"]
+script = ExtResource("1_g8x8d")
+name = "What Murphy??"
+description = ""
+subquests = Array[ExtResource("1_g8x8d")]([])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([SubResource("Resource_70sdd")])
+required = true
+active = true
+hidden = false
+tracking = false
+complete = false
+outcome = 0
+
 [resource]
 script = ExtResource("1_g8x8d")
 name = "Mr. Bungalow's Murphy"
 description = "You need to get Mr. Bungalow a Murphy right away!"
-subquests = Array[ExtResource("1_g8x8d")]([SubResource("Resource_abdby"), SubResource("Resource_f1xgu")])
+subquests = Array[ExtResource("1_g8x8d")]([SubResource("Resource_f1xgu"), SubResource("Resource_h3nsu")])
 conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
 required = true
 active = true
