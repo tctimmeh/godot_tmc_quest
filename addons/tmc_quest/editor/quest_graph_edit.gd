@@ -1,6 +1,8 @@
 @tool
 extends GraphEdit
 
+signal inspect(object)
+
 const QuestGraphNode := preload("res://addons/tmc_quest/editor/quest_graph_node.tscn")
 
 enum SlotType {
@@ -242,10 +244,16 @@ func delete_nodes(nodes):
         delete_node(node)
 
 func _on_node_selected(node:Node):
+    if not selected_nodes.size():
+        inspect.emit(node.get_meta("quest"))
     selected_nodes[node] = true
 
 func _on_node_deselected(node:Node):
     selected_nodes.erase(node)
+    if selected_nodes.size() ==  1:
+        inspect.emit(selected_nodes.keys()[0].get_meta("quest"))
+    if not selected_nodes.size():
+        inspect.emit(quest)
 
 func _on_cancel_rename_button_pressed():
     rename_dialog.hide()

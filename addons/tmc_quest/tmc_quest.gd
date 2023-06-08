@@ -6,8 +6,13 @@ var graph_edit
 
 func _enter_tree():
     graph_edit = QuestGraphEdit.instantiate()
+    graph_edit.inspect.connect(inspect)
     get_editor_interface().get_editor_main_screen().add_child(graph_edit)
     _make_visible(false)
+
+func inspect(object):
+    pass
+    get_editor_interface().inspect_object(object, "", true)
 
 func _exit_tree():
     if graph_edit:
