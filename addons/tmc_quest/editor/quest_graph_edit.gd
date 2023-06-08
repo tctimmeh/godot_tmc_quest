@@ -156,8 +156,20 @@ func release_position_to_grid_position(release_position: Vector2):
 
 func _on_connection_to_empty(from_node_name, from_port, release_position: Vector2):
     var parent_node = get_node(str(from_node_name))
-    if from_port == OutputPort.Subquests:
-        new_subquest(parent_node, release_position_to_grid_position(release_position))
+    var grid_position = release_position_to_grid_position(release_position)
+    match from_port:
+        OutputPort.Subquests:
+            new_subquest(parent_node, grid_position)
+        OutputPort.Conditions:
+            new_condition(parent_node, grid_position)
+
+func new_condition(parent_node: GraphNode, position: Vector2):
+    var class_info = ProjectSettings.get_global_class_list()
+    var filter = func(x): return x.base == &"QuestCondition"
+    var all_classes = class_info.filter(filter)
+    for c in all_classes:
+        var cls = load(c["path"])
+        prints(cls.name, '-', cls)
 
 func new_subquest(parent_node: GraphNode, position: Vector2):
     var parent_quest = parent_node.get_meta("quest") as Quest

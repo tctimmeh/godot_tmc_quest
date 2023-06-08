@@ -3,7 +3,6 @@
 class_name QuestCondition
 extends Resource
 
-@export var name: String
 @export var required: bool = true
 @export var active: bool = false
 @export var always: bool = false
