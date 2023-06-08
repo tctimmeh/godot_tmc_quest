@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=2 format=3 uid="uid://ea2xn40q6152"]
+
+[ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="1_nvoyi"]
+
+[resource]
+script = ExtResource("1_nvoyi")
+name = "New Quest"
+description = ""
+subquests = Array[ExtResource("1_nvoyi")]([])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
+required = true
+active = false
+hidden = false
+tracking = false
+complete = false
+outcome = 0

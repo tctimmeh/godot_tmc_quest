@@ -1,6 +1,8 @@
 @tool
 extends GraphNode
 
+signal context_requested
+
 const input_port_color := Color("#dd2020")
 const condition_port_color := Color("0099ff")
 const child_port_color := Color("#22bb11")
@@ -37,3 +39,11 @@ func _on_active_checkbox_pressed():
 
 func _on_hidden_checkbox_pressed():
     quest.hidden = hidden_checkbox.button_pressed
+
+
+func _on_gui_input(event:InputEvent):
+    if event is InputEventMouseButton \
+            and event.pressed \
+            and event.button_index == MOUSE_BUTTON_RIGHT \
+            :
+        context_requested.emit()

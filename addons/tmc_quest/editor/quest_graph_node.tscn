@@ -19,7 +19,7 @@ outcome = 0
 [node name="QuestGraphNode" type="GraphNode"]
 offset_right = 36.0
 offset_bottom = 54.0
-mouse_filter = 1
+mouse_default_cursor_shape = 2
 theme_type_variation = &"RootQuestGraphNode"
 title = "Mr. Murphys Bungalow"
 slot/0/left_enabled = true
@@ -111,6 +111,7 @@ text = "Conditions
 layout_mode = 2
 text = "Subquests"
 
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="pressed" from="HBoxContainer/RequiredCheckbox" to="." method="_on_required_checkbox_pressed"]
 [connection signal="pressed" from="HBoxContainer/ActiveCheckbox" to="." method="_on_active_checkbox_pressed"]
 [connection signal="pressed" from="HBoxContainer/HiddenCheckbox" to="." method="_on_hidden_checkbox_pressed"]

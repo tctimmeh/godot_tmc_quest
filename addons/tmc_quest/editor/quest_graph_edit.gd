@@ -104,7 +104,7 @@ func set_quest(new_quest):
     clear_connections()
     create_graph_nodes(quest)
     selected_nodes.clear()
-    arrange_nodes()
+    call_deferred("arrange_nodes")
 
 func create_graph_nodes(quest: Quest, parent_node: GraphNode = null):
     var quest_node = create_graph_node(quest, Vector2(120, 120))
@@ -123,11 +123,16 @@ func create_graph_nodes(quest: Quest, parent_node: GraphNode = null):
 
 func create_graph_node(quest: Quest, position: Vector2 = Vector2(100, 100)) -> GraphNode:
     var quest_node = QuestGraphNode.instantiate()
+    quest_node.context_requested.connect(_on_graph_node_context_requested.bind(quest_node))
     quest_node.quest = quest
     quest_node.set_meta("quest", quest)
     if position:
         quest_node.position_offset = position
     return quest_node
+
+func _on_graph_node_context_requested(node: GraphNode):
+    if not selected_nodes.size():
+        set_selected(node)
 
 func _on_connection_request(from_node_name, from_port, to_node_name, to_port):
     if to_port == InputPort.Parent:
@@ -178,11 +183,13 @@ func _on_disconnection_request(from_node_name, from_port, to_node_name, to_port)
     disconnect_node(from_node_name, from_port, to_node_name, to_port)
 
 func _on_popup_request(position:Vector2):
-    context_menu.set_item_disabled(ContextMenuItems.Rename, not bool(selected_nodes.size()))
+    context_menu.set_item_disabled(ContextMenuItems.Rename, selected_nodes.size() != 1)
     context_menu.set_item_disabled(ContextMenuItems.Delete, not bool(selected_nodes.size()))
 
-    context_menu.position = position
+    var screen_position = Vector2(DisplayServer.window_get_position()) + get_viewport().get_mouse_position()
+
     context_menu.popup()
+    context_menu.position = screen_position
 
 func _on_popup_menu_id_pressed(id:int):
     match id:
