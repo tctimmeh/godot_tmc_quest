@@ -54,10 +54,11 @@ layout_mode = 2
 size_flags_horizontal = 6
 tooltip_text = "Required"
 button_pressed = true
-text = "R"
+text = "Req"
 
 [node name="ActiveCheckbox" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 6
 tooltip_text = "Active"
@@ -69,7 +70,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 tooltip_text = "Always"
-text = "A"
+text = "Always"
 
 [node name="EventsLabel" type="Label" parent="."]
 layout_mode = 2

@@ -3,10 +3,6 @@ extends GraphNode
 
 signal context_requested
 
-const input_port_color := Color("#dd2020")
-const condition_port_color := Color("0099ff")
-const child_port_color := Color("#22bb11")
-
 @export var condition: QuestCondition: set = set_condition
 
 @onready var required_checkbox := %RequiredCheckbox
@@ -25,7 +21,7 @@ func _process(delta):
     set_active_shade()
 
 func set_active_shade():
-    if condition and condition.active:
+    if condition and (condition.active or condition.always):
         self_modulate = Color.WHITE
     else:
         self_modulate = Color.DARK_GRAY

@@ -5,18 +5,17 @@ signal inspect(object)
 
 const QuestGraphNode := preload("res://addons/tmc_quest/editor/quest_graph_node.tscn")
 const ConditionGraphNode := preload("res://addons/tmc_quest/editor/condition_graph_node.tscn")
-# const ActionGraphNode := preload("res://addons/tmc_quest/editor/quest_graph_node.tscn")
+const ActionGraphNode := preload("res://addons/tmc_quest/editor/action_graph_node.tscn")
 const DefaultConditionIcon := preload("res://addons/tmc_quest/assets/condition_icon.svg")
 
 const QuestGraphNodeClass := preload("res://addons/tmc_quest/editor/quest_graph_node.gd")
 const ConditionGraphNodeClass := preload("res://addons/tmc_quest/editor/condition_graph_node.gd")
-# const ActionGraphNodeClass := preload("res://addons/tmc_quest/editor/quest_graph_node.gd")
+const ActionGraphNodeClass := preload("res://addons/tmc_quest/editor/action_graph_node.gd")
 
 enum SlotType {
     ParentChild = 1,
     QuestCondition = 2,
-    ConditionAction = 3,
-    ActionQuest = 3,
+    Action = 3,
 }
 
 enum QuestSlot {
@@ -47,6 +46,14 @@ enum ConditionInputPort {
 
 enum ConditionOutputPort {
     Actions = 0,
+}
+
+enum ActionInputPort {
+    Trigger = 0,
+}
+
+enum ActionOutputPort {
+    Target = 0,
 }
 
 enum ContextMenuItems {
@@ -178,8 +185,7 @@ func create_condition_graph_nodes(quest: Quest, parent_node: GraphNode, position
             ConditionInputPort.Quest
         )
 
-    # for subquest in quest.subquests:
-    #     create_quest_graph_nodes(subquest, quest_node)
+        create_action_graph_nodes(condition, condition_node, position)
 
 func create_condition_graph_node(quest: Quest, condition: QuestCondition, position: Vector2 = Vector2(100, 100)):
     var condition_node = ConditionGraphNode.instantiate()
@@ -192,20 +198,52 @@ func create_condition_graph_node(quest: Quest, condition: QuestCondition, positi
         condition_node.position_offset = position
     return condition_node
 
+func create_action_graph_nodes(parentObject, parent_node: GraphNode, position: Vector2):
+    # TODO:: parent obj may be a condition or an action...
+    for action in parentObject.actions:
+        var action_node = create_action_graph_node(action, position)
+        add_child(action_node)
+
+        # TODO:: same here
+        connect_node(
+            parent_node.name,
+            ConditionOutputPort.Actions,
+            action_node.name,
+            ActionInputPort.Trigger
+        )
+
+    # TODO:: create target actions if any
+    # for subquest in quest.subquests:
+    #     create_quest_graph_nodes(subquest, quest_node)
+
+func create_action_graph_node(action: QuestAction, position: Vector2 = Vector2(100, 100)):
+    var action_node = ActionGraphNode.instantiate()
+    action_node.context_requested.connect(_on_graph_node_context_requested.bind(action_node))
+    action_node.action = action
+
+    action_node.set_meta("action", action)
+    if position:
+        action_node.position_offset = position
+    return action_node
+
 func _on_graph_node_context_requested(node: GraphNode):
     if selected_nodes.size() < 2:
         set_selected(node)
 
 func _on_connection_request(from_node_name, from_port, to_node_name, to_port):
-    print("TODO:::: check the connection type!")
-    if to_port == QuestInputPort.Parent:
-        var from_node = get_node(str(from_node_name))
+    var from_node = get_node(str(from_node_name))
+    var to_node = get_node(str(to_node_name))
+
+    if from_node is QuestGraphNodeClass:
         var from_quest = from_node.get_meta("quest") as Quest
-        var to_node = get_node(str(to_node_name))
-        var to_quest = to_node.get_meta("quest") as Quest
-        if to_quest.parent:
-            return
-        from_quest.add_subquest(to_quest)
+        if to_node is QuestGraphNodeClass:
+            var to_quest = to_node.get_meta("quest") as Quest
+            if to_quest.parent:
+                return
+            from_quest.add_subquest(to_quest)
+        elif to_node is ConditionGraphNodeClass:
+            var to_condition = to_node.get_meta("condition") as QuestCondition
+            from_quest.add_condition(to_condition)
 
     connect_node(from_node_name, from_port, to_node_name, to_port)
 
@@ -241,7 +279,6 @@ func new_condition(parent_node: GraphNode, position: Vector2):
     type_select_menu.set_meta("parent_node", parent_node)
     var index = 0
     for cls_info in condition_classes:
-        # var cls = load(c["path"])
         type_select_menu.add_item(cls_info["class"])
         type_select_menu.set_item_icon(
             index,

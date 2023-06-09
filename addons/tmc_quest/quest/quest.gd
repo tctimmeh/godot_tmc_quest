@@ -16,7 +16,12 @@ var parent
 @export var conditions: Array[QuestCondition]
 
 @export var required: bool = true
-@export var active: bool = false
+@export var active: bool = false:
+    get:
+        return active
+    set(val):
+        active = val
+        _activated() if val else _deactivated()
 @export var hidden: bool = false
 @export var tracking: bool = false
 @export var complete: bool = false
@@ -52,7 +57,7 @@ func add_condition(condition):
     if active and is_branch_active():
         condition.activate()
 
-func remove_condition(condition):
+func remove_condition(condition: QuestCondition):
     condition.deactivate()
     conditions.erase(condition)
 
@@ -77,9 +82,7 @@ func deactivate_conditions(normal_only=false):
         condition.deactivate()
 
 # I am now allowed to track my conditions and progress the quest
-func activate():
-    active = true
-
+func _activated():
     # Tell all my children that an ancestor was activated
     # If they are also active then they will need to activate their conditions
     for quest in subquests:
@@ -102,9 +105,7 @@ func parent_activated():
         activate_conditions()
 
 # I may not track my conditions or progress the quest
-func deactivate():
-    active = false
-
+func _deactivated():
     for quest in subquests:
         quest.parent_deactivated()
 
@@ -145,7 +146,7 @@ func pass_quest():
         deactivate_conditions(true)
         return
 
-    deactivate()
+    active = false
 
 func have_conditions_passed() -> bool:
     for condition in conditions:
