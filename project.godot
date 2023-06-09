@@ -16,9 +16,14 @@ config/icon="res://icon.svg"
 
 [editor]
 
+script/templates_search_path="res://addons/tmc_quest/script_templates"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/tmc_quest/plugin.cfg", "res://addons/gut/plugin.cfg")
+enabled=PackedStringArray("res://addons/tmc_quest/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false
