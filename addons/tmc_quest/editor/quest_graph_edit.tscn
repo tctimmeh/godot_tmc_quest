@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://gjn35hm7rppd"]
+[gd_scene load_steps=3 format=3 uid="uid://gjn35hm7rppd"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_edit.gd" id="1_cb1dk"]
 [ext_resource type="Theme" uid="uid://ddnybqx45hg3w" path="res://addons/tmc_quest/editor/editor_theme.tres" id="3_x7ojg"]
@@ -19,7 +19,6 @@ zoom_max = 1.0
 zoom_step = 1.1
 minimap_enabled = false
 script = ExtResource("1_cb1dk")
-quest = null
 metadata/_edit_lock_ = true
 
 [node name="ContextMenu" type="PopupMenu" parent="."]
@@ -92,6 +91,26 @@ item_count = 1
 item_0/text = "Type List"
 item_0/id = 0
 
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+offset_left = 41.0
+offset_top = 136.0
+offset_right = 548.0
+offset_bottom = 186.0
+
+[node name="Toolbar" type="HBoxContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewQuestButton" type="Button" parent="HBoxContainer/Toolbar"]
+layout_mode = 2
+text = "New Quest"
+
+[node name="SaveButton" type="Button" parent="HBoxContainer/Toolbar"]
+layout_mode = 2
+text = "Save"
+
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
 [connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
@@ -104,3 +123,5 @@ item_0/id = 0
 [connection signal="pressed" from="RenameDialog/VBoxContainer/HBoxContainer/CancelRenameButton" to="." method="_on_cancel_rename_button_pressed"]
 [connection signal="pressed" from="RenameDialog/VBoxContainer/HBoxContainer/OkRenameButton" to="." method="_on_ok_rename_button_pressed"]
 [connection signal="index_pressed" from="TypeSelectMenu" to="." method="_on_type_select_menu_index_pressed"]
+[connection signal="pressed" from="HBoxContainer/Toolbar/NewQuestButton" to="." method="_on_new_quest_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Toolbar/SaveButton" to="." method="_on_save_button_pressed"]

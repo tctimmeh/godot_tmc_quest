@@ -77,19 +77,13 @@ func _ready():
     create_save_dialog()
 
 func setup_toolbar():
+    if not is_inside_tree():
+        return
+
+    var toolbar = %Toolbar.duplicate()
     var toolbar_hbox = get_zoom_hbox()
-
-    var new_button := Button.new()
-    new_button.name = "NewQuestButton"
-    new_button.text = "New Quest"
-    new_button.pressed.connect(_on_new_quest_button_pressed)
-    toolbar_hbox.add_child(new_button)
-
-    var save_button := Button.new()
-    save_button.name = "SaveButton"
-    save_button.text = "Save"
-    save_button.pressed.connect(_on_save_button_pressed)
-    toolbar_hbox.add_child(save_button)
+    toolbar_hbox.add_child(toolbar)
+    toolbar.show()
 
 func create_save_dialog():
     save_dialog = EditorFileDialog.new()
@@ -104,6 +98,9 @@ func create_save_dialog():
     add_child(save_dialog)
 
 func save():
+    if not quest:
+        return
+
     var root = quest
     while root.parent:
         root = root.parent
