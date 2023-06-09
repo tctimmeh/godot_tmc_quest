@@ -10,7 +10,7 @@ func test_activate_quest_activate_own_conditions():
     quest.add_condition(c)
     assert_false(c.active)
 
-    quest.activate()
+    quest.active = true
     assert_true(c.active)
 
 func test_activate_quest_with_inactive_ancestor_does_not_activate_own_conditions():
@@ -28,40 +28,40 @@ func test_activate_quest_with_inactive_ancestor_does_not_activate_own_conditions
     assert_false(c.active)
     assert_false(quest.active)
 
-    quest.activate()
+    quest.active = true
     assert_false(t1.active)
     assert_false(t2.active)
     assert_false(c.active)
 
-    t2.activate()
+    t2.active = true
     assert_false(c.active)
 
 func test_deactivate_disables_own_conditions():
     var c = QuestCondition.new()
     quest.add_condition(c)
-    quest.activate()
+    quest.active = true
 
     assert_true(quest.active)
     assert_true(c.active)
 
-    quest.deactivate()
+    quest.active = false
     assert_false(c.active)
 
 func test_deactivate_disables_conditions_on_all_subs():
     var t1 = Quest.new()
-    t1.activate()
+    t1.active = true
     quest.add_subquest(t1)
 
     var t2 = Quest.new()
     t1.add_subquest(t2)
     var c = QuestCondition.new()
     t2.add_condition(c)
-    t2.activate()
-    quest.activate()
+    t2.active = true
+    quest.active = true
 
     assert_true(c.active)
 
-    quest.deactivate()
+    quest.active = false
     assert_false(c.active)
 
 func test_adding_condition_to_inactive_quest_does_not_activate_condition():
@@ -72,7 +72,7 @@ func test_adding_condition_to_inactive_quest_does_not_activate_condition():
     assert_false(c.active)
 
 func test_adding_condition_to_active_quest_activates_condition():
-    quest.activate()
+    quest.active = true
 
     var c = QuestCondition.new()
     assert_false(c.active)

@@ -10,7 +10,7 @@ func before_each():
 func test_advance_checks_own_conditions():
     var c = ExampleCondition.new()
     quest.add_condition(c)
-    quest.activate()
+    quest.active = true
 
     assert_false(bool(c.checked))
     quest.advance()
@@ -18,10 +18,10 @@ func test_advance_checks_own_conditions():
 
 func test_advance_checks_conditions_of_subs():
     var t1 = Quest.new()
-    t1.activate()
+    t1.active = true
 
     quest.add_subquest(t1)
-    quest.activate()
+    quest.active = true
 
     var c = ExampleCondition.new()
     t1.add_condition(c)
@@ -31,7 +31,7 @@ func test_advance_checks_conditions_of_subs():
 
 func test_advance_inactive_quest_does_not_checks_conditions_of_or_subs():
     var t1 = Quest.new()
-    t1.activate()
+    t1.active = true
     quest.add_subquest(t1)
 
     var c = ExampleCondition.new()

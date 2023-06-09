@@ -6,7 +6,7 @@ var normal_condition: QuestCondition
 
 func before_each():
     quest = Quest.new()
-    quest.activate()
+    quest.active = true
 
     always_condition = QuestCondition.new()
     always_condition.passed = true
@@ -20,7 +20,7 @@ func test_deactivating_disables_quest_and_all_conditions():
     quest.add_condition(normal_condition)
 
     var t = Quest.new()
-    t.activate()
+    t.active = true
     quest.add_subquest(t)
 
     assert_true(always_condition.active)
@@ -28,7 +28,7 @@ func test_deactivating_disables_quest_and_all_conditions():
     assert_true(t.active)
     assert_true(quest.active)
 
-    quest.deactivate()
+    quest.active = false
     assert_false(always_condition.active)
     assert_false(normal_condition.active)
     assert_true(t.active)

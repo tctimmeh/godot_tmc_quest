@@ -10,7 +10,7 @@ func test_activate_quest_does_not_activate_subquests():
     assert_false(t.active)
 
     quest.add_subquest(t)
-    quest.activate()
+    quest.active = true
     assert_false(t.active)
 
 func test_activate_quest_doest_not_activate_conditions_on_subquests():
@@ -20,5 +20,5 @@ func test_activate_quest_doest_not_activate_conditions_on_subquests():
     assert_false(c.active)
 
     self.quest.add_subquest(t)
-    self.quest.activate()
+    self.quest.active = true
     assert_false(c.active)

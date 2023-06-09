@@ -4,7 +4,7 @@ var quest: Quest
 
 func before_each():
     quest = Quest.new()
-    quest.activate()
+    quest.active = true
 
 func test_quest_with_no_subs_and_no_conditions_auto_passes():
     assert_false(quest.complete)
@@ -50,11 +50,11 @@ func test_quest_passed_if_only_required_conditions_passed():
 
 func test_quest_passed_if_all_required_subs_passed():
     var t1 = Quest.new()
-    t1.activate()
+    t1.active = true
     quest.add_subquest(t1)
 
     var t2 = Quest.new()
-    t2.activate()
+    t2.active = true
     quest.add_subquest(t2)
 
     quest.advance()
@@ -63,11 +63,11 @@ func test_quest_passed_if_all_required_subs_passed():
 
 func test_quest_passed_if_only_required_subs_passed():
     var t1 = Quest.new()
-    t1.activate()
+    t1.active = true
     quest.add_subquest(t1)
 
     var t2 = Quest.new()
-    t2.activate()
+    t2.active = true
     t2.add_condition(QuestCondition.new())
     t2.required = false
     quest.add_subquest(t2)
@@ -91,7 +91,7 @@ func test_quest_not_passed_if_any_required_sub_not_passed():
 
 func test_quest_passed_if_conditions_and_subs_passed():
     var t1 = Quest.new()
-    t1.activate()
+    t1.active = true
     quest.add_subquest(t1)
 
     var c = QuestCondition.new()
@@ -109,13 +109,13 @@ func test_quest_passed_if_deactivated_after_passing():
     assert_true(quest.complete)
     assert_eq(quest.outcome, Quest.outcomes().Passed)
 
-    quest.deactivate()
+    quest.active = false
     assert_true(quest.complete)
     assert_eq(quest.outcome, Quest.outcomes().Passed)
 
 func test_quest_not_passed_if_subs_pass_but_conditions_not_passed():
     var t1 = Quest.new()
-    t1.activate()
+    t1.active = true
     quest.add_subquest(t1)
 
     var c = QuestCondition.new()
@@ -127,7 +127,7 @@ func test_quest_not_passed_if_subs_pass_but_conditions_not_passed():
 
 func test_quest_not_passed_if_conditions_passed_but_subs_fail():
     var t1 = Quest.new()
-    t1.activate()
+    t1.active = true
     t1.add_condition(QuestCondition.new())
     quest.add_subquest(t1)
 
