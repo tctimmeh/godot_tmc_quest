@@ -7,6 +7,7 @@ const QuestGraphNode := preload("res://addons/tmc_quest/editor/quest_graph_node.
 const ConditionGraphNode := preload("res://addons/tmc_quest/editor/condition_graph_node.tscn")
 const ActionGraphNode := preload("res://addons/tmc_quest/editor/action_graph_node.tscn")
 const DefaultConditionIcon := preload("res://addons/tmc_quest/assets/condition_icon.svg")
+const DefaultActionIcon := preload("res://addons/tmc_quest/assets/action_icon.svg")
 
 const QuestGraphNodeClass := preload("res://addons/tmc_quest/editor/quest_graph_node.gd")
 const ConditionGraphNodeClass := preload("res://addons/tmc_quest/editor/condition_graph_node.gd")
@@ -244,6 +245,19 @@ func _on_connection_request(from_node_name, from_port, to_node_name, to_port):
         elif to_node is ConditionGraphNodeClass:
             var to_condition = to_node.get_meta("condition") as QuestCondition
             from_quest.add_condition(to_condition)
+    elif from_node is ConditionGraphNodeClass:
+        var from_condition = from_node.get_meta("condition") as QuestCondition
+        if to_node is ActionGraphNodeClass:
+            var to_action = to_node.get_meta("action") as QuestAction
+            from_condition.add_action(to_action)
+    elif from_node is ActionGraphNodeClass:
+        var from_action = from_node.get_meta("action") as QuestAction
+        if to_node is ActionGraphNodeClass:
+            var to_action = to_node.get_meta("action") as QuestAction
+            # TODO:: connect this action to the other action
+        if to_node is QuestGraphNodeClass:
+            var to_quest = to_node.get_meta("quest") as Quest
+            # TODO:: connect this action to the quest
 
     connect_node(from_node_name, from_port, to_node_name, to_port)
 
@@ -262,12 +276,14 @@ func _on_connection_to_empty(from_node_name, from_port, release_position: Vector
             QuestOutputPort.Subquests:
                 new_subquest(parent_node, grid_position)
             QuestOutputPort.Conditions:
-                new_condition(parent_node, grid_position)
+                new_object_from_type_list(&"QuestCondition", DefaultConditionIcon, parent_node, grid_position)
+                # new_condition(parent_node, grid_position)
     elif parent_node is ConditionGraphNodeClass:
-        pass # new_action(parent_node, grid_position)
+        # new_action(parent_node, grid_position)
+        new_object_from_type_list(&"QuestAction", DefaultActionIcon, parent_node, grid_position)
 
-func new_condition(parent_node: GraphNode, position: Vector2):
-    var by_base = func(x): return x.base == &"QuestCondition"
+func new_object_from_type_list(baseType: StringName, defaultIcon: Texture2D, parent_node: GraphNode, position: Vector2):
+    var by_base = func(x): return x.base == baseType
     var by_name = func(x): return x["class"]
 
     var class_info = ProjectSettings.get_global_class_list()
@@ -279,10 +295,15 @@ func new_condition(parent_node: GraphNode, position: Vector2):
     type_select_menu.set_meta("parent_node", parent_node)
     var index = 0
     for cls_info in condition_classes:
-        type_select_menu.add_item(cls_info["class"])
+        var base_name = str(cls_info["base"])
+        var item_name = str(cls_info["class"])
+        if item_name.ends_with(base_name):
+            item_name = item_name.replace(base_name, "")
+
+        type_select_menu.add_item(item_name)
         type_select_menu.set_item_icon(
             index,
-            load(cls_info["icon"]) if cls_info["icon"] else DefaultConditionIcon
+            load(cls_info["icon"]) if cls_info["icon"] else defaultIcon
         )
         type_select_menu.set_item_metadata(index, cls_info)
         index += 1
@@ -304,7 +325,7 @@ func _on_type_select_menu_index_pressed(index):
     if new_object is QuestAction:
         var parent_condition = parent_node.get_meta("condition") as QuestCondition
         parent_condition.add_action(new_object)
-        # new_object_node = create_action_graph_node(condition, new_object, position)
+        new_object_node = create_action_graph_node(new_object, position)
 
     add_child(new_object_node)
     connect_node(
@@ -343,7 +364,9 @@ func _on_disconnection_request(from_node_name, from_port, to_node_name, to_port)
             from_quest.remove_condition(to_condition)
 
     elif parent_node is ConditionGraphNodeClass:
-        pass # disconnect an action from this condition
+        var from_condition = parent_node.get_meta("condition") as QuestCondition
+        var to_action = to_node.get_meta("action") as QuestAction
+        from_condition.remove_action(to_action)
     # elif parent_node is ActionGraphNodeClass:
     #     pass # disconnect a quest from this action
 
@@ -390,17 +413,30 @@ func rename_node(node, new_name):
     quest.name = new_name
 
 func delete_node(node):
-    var quest = node.get_meta("quest")
+    var connections = get_connection_list()
+
     if node is QuestGraphNodeClass:
+        var quest = node.get_meta("quest")
         if quest.parent:
             quest.parent.get_ref().remove_subquest(quest)
         for subquest in quest.subquests:
             subquest.parent = null
     elif node is ConditionGraphNodeClass:
+        var quest = node.get_meta("quest")
         var condition = node.get_meta("condition")
         quest.remove_condition(condition)
+    elif node is ActionGraphNodeClass:
+        var action = node.get_meta("action")
+        var triggers = connections.filter(func(c): return c["to"] == node.name)
+        for trigger in triggers:
+            var trigger_node = get_node(str(trigger["from"]))
+            var trigger_obj
+            if trigger_node is ConditionGraphNodeClass:
+                trigger_obj = trigger_node.get_meta("condition")
+            elif trigger_node is ActionGraphNodeClass:
+                trigger_obj = trigger_node.get_meta("action")
+            trigger_obj.remove_action(action)
 
-    var connections = get_connection_list()
     for connection in connections:
         if connection['from'] == node.name or connection['to'] == node.name:
             disconnect_node(
@@ -424,6 +460,8 @@ func _on_node_selected(node:Node):
             object = node.get_meta("quest")
         elif node is ConditionGraphNodeClass:
             object = node.get_meta("condition")
+        elif node is ActionGraphNodeClass:
+            object = node.get_meta("action")
 
         inspect.emit(object)
 
@@ -437,8 +475,8 @@ func _on_node_deselected(node:Node):
             inspect.emit(selected_nodes.keys()[0].get_meta("quest"))
         elif sel_node is ConditionGraphNodeClass:
             inspect.emit(selected_nodes.keys()[0].get_meta("condition"))
-        # elif sel_node is ActionGraphNodeClass:
-        #     inspect.emit(selected_nodes.keys()[0].get_meta("action"))
+        elif sel_node is ActionGraphNodeClass:
+            inspect.emit(selected_nodes.keys()[0].get_meta("action"))
     if not selected_nodes.size():
         inspect.emit(quest)
 

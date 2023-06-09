@@ -18,6 +18,9 @@ func succeed():
 func add_action(action: QuestAction):
     actions.append(action)
 
+func remove_action(action: QuestAction):
+    actions.erase(action)
+
 func execute_actions():
     for action in actions:
         action.execute()

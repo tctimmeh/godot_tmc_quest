@@ -2,4 +2,4 @@
 class_name ConsoleQuestAction
 extends QuestAction
 
-var name: String = "Hello"
+var name: String = "Console"
