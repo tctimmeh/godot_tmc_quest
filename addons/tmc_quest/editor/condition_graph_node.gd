@@ -22,6 +22,13 @@ func _process(delta):
     required_checkbox.button_pressed = condition.required
     active_checkbox.button_pressed = condition.active
     always_checkbox.button_pressed = condition.always
+    set_active_shade()
+
+func set_active_shade():
+    if condition and condition.active:
+        self_modulate = Color.WHITE
+    else:
+        self_modulate = Color.DARK_GRAY
 
 func set_condition(new_condition):
     condition = new_condition

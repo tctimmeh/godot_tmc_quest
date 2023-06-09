@@ -20,6 +20,13 @@ func _process(delta):
     required_checkbox.button_pressed = quest.required
     active_checkbox.button_pressed = quest.active
     hidden_checkbox.button_pressed = quest.hidden
+    set_active_shade()
+
+func set_active_shade():
+    if quest and quest.active:
+        self_modulate = Color.WHITE
+    else:
+        self_modulate = Color.DARK_GRAY
 
 func set_quest(new_quest):
     quest = new_quest
