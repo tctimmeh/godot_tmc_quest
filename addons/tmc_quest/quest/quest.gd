@@ -129,7 +129,11 @@ func advance():
         quest.advance()
 
     for condition in conditions:
-        condition.check()
+        var val = condition.check()
+        if val:
+            condition.succeed()
+        else:
+            condition.fail()
 
     check_for_success()
 

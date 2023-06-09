@@ -5,6 +5,7 @@ class_name _CLASS_QuestAction
 extends QuestAction
 
 const name := "_CLASS_"
+const description := "Describe your action"
 
 func execute():
     # run your action here

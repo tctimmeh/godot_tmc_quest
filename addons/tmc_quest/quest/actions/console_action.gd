@@ -3,4 +3,5 @@
 class_name ConsoleQuestAction
 extends QuestAction
 
-var name := "Console"
+const name := "Console"
+const description := "Print to the console"

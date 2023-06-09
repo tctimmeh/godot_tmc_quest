@@ -4,16 +4,46 @@ class_name QuestCondition
 extends Resource
 
 @export var required: bool = true
-@export var active: bool = false
+@export var active: bool = false:
+    get:
+        return active
+    set(val):
+        active = val
+        if val:
+            _activated()
+        else:
+            _deactivated()
 @export var always: bool = false
-@export var passed = false         # might be best to leave this be variant type
+@export var passed := false:
+    set = set_passed
+
 @export var actions: Array[QuestAction]
 
-func succeed():
-    if passed:
+func _check() -> bool:
+    # Implement this to check your condition
+    return passed
+
+func _activated():
+    # called when activated
+    pass
+
+func _deactivated():
+    # called when deactivated
+    pass
+
+func set_passed(val: bool):
+    if val == passed:
         return
+
+    passed = val
+    if val:
+        execute_actions()
+
+func succeed():
     passed = true
-    execute_actions()
+
+func fail():
+    passed = false
 
 func add_action(action: QuestAction):
     actions.append(action)
@@ -25,8 +55,8 @@ func execute_actions():
     for action in actions:
         action.execute()
 
-func check():
-    return false
+func check() -> bool:
+    return _check()
 
 func activate():
     active = true
