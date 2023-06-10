@@ -1,22 +1,11 @@
-@tool
-extends GraphNode
+extends "res://addons/tmc_quest/editor/base_graph_node.gd"
 
-signal context_requested
 
-@export var action: QuestAction: set = set_action
-
+# Called when the node enters the scene tree for the first time.
 func _ready():
-    set_action(action)
+    pass # Replace with function body.
 
-func set_action(new_action):
-    action = new_action
-    if not action or not is_inside_tree():
-        return
-    title = action.name
 
-func _on_gui_input(event:InputEvent):
-    if event is InputEventMouseButton \
-            and event.pressed \
-            and event.button_index == MOUSE_BUTTON_RIGHT \
-            :
-        context_requested.emit()
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+    pass
