@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://2405mcck5lkg"]
+
+[ext_resource type="Theme" uid="uid://ddnybqx45hg3w" path="res://addons/tmc_quest/editor/editor_theme.tres" id="1_cc8ua"]
+[ext_resource type="Script" path="res://addons/tmc_quest/editor/base_graph_node.gd" id="2_txm3x"]
+
+[node name="BaseGraphNode" type="GraphNode"]
+offset_right = 36.0
+offset_bottom = 54.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_cc8ua")
+theme_type_variation = &"QuestGraphNode"
+title = "Base Node"
+script = ExtResource("2_txm3x")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
