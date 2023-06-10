@@ -10,6 +10,18 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("1_cc8ua")
 theme_type_variation = &"QuestGraphNode"
 title = "Base Node"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
 script = ExtResource("2_txm3x")
+
+[node name="Floating" type="Control" parent="."]
+layout_mode = 2
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
