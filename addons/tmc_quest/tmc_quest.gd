@@ -11,7 +11,6 @@ func _enter_tree():
     _make_visible(false)
 
 func inspect(object):
-    pass
     get_editor_interface().inspect_object(object, "", true)
 
 func _exit_tree():

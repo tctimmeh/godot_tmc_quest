@@ -132,7 +132,7 @@ func clear_graph_nodes():
             child.queue_free()
 
 func set_quest(new_quest):
-    if not new_quest:
+    if not new_quest or new_quest == quest:
         return
 
     quest = new_quest
@@ -451,18 +451,18 @@ func delete_nodes(nodes):
         delete_node(node)
 
 func _on_node_selected(node:Node):
-    if not selected_nodes.size():
-        var object
-        if node is QuestGraphNodeClass:
-            object = node.get_meta("quest")
-        elif node is ConditionGraphNodeClass:
-            object = node.get_meta("condition")
-        elif node is ActionGraphNodeClass:
-            object = node.get_meta("action")
-
-        inspect.emit(object)
-
     selected_nodes[node] = true
+    if selected_nodes.size() != 1:
+        return
+
+    var object
+    if node is QuestGraphNodeClass:
+        object = node.get_meta("quest")
+    elif node is ConditionGraphNodeClass:
+        object = node.get_meta("condition")
+    elif node is ActionGraphNodeClass:
+        object = node.get_meta("action")
+    inspect.emit(object)
 
 func _on_node_deselected(node:Node):
     selected_nodes.erase(node)
