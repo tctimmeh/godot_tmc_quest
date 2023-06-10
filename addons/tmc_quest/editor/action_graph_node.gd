@@ -6,8 +6,8 @@ extends "res://addons/tmc_quest/editor/base_graph_node.gd"
 func _ready():
     set_action(action)
 
-func set_action(new_action):
+func set_action(new_action: QuestAction):
     action = new_action
-    if not action or not is_inside_tree():
+    if not action:
         return
-    title = action.name
+    title = new_action.name

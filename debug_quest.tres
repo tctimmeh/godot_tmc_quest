@@ -1,11 +1,8 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://bb4whv8dpw4h"]
+[gd_resource type="Resource" script_class="Quest" load_steps=9 format=3 uid="uid://bb4whv8dpw4h"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="1_g8x8d"]
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/conditions/signal_condition.gd" id="2_1pjhk"]
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/actions/console_action.gd" id="2_26v8k"]
-
-[sub_resource type="Resource" id="Resource_3kbvi"]
-script = ExtResource("2_26v8k")
 
 [sub_resource type="Resource" id="Resource_1r17w"]
 script = ExtResource("2_26v8k")
@@ -16,7 +13,7 @@ required = true
 active = true
 always = false
 passed = false
-actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([SubResource("Resource_3kbvi"), SubResource("Resource_1r17w")])
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([SubResource("Resource_1r17w")])
 
 [sub_resource type="Resource" id="Resource_h3nsu"]
 script = ExtResource("1_g8x8d")

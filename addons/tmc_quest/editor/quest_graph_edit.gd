@@ -433,6 +433,8 @@ func delete_node(node):
             elif trigger_node is ActionGraphNodeClass:
                 trigger_obj = trigger_node.get_meta("action")
             trigger_obj.remove_action(action)
+    else:
+        push_error("Deleting unknown node type")
 
     for connection in connections:
         if connection['from'] == node.name or connection['to'] == node.name:
