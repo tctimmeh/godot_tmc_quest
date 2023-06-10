@@ -24,11 +24,7 @@ func set_quest(new_quest):
         return
 
     theme_type_variation = "QuestGraphNode" if quest.parent else "RootQuestGraphNode"
-
     title = quest.name
-    required_checkbox.button_pressed = quest.required
-    active_checkbox.button_pressed = quest.active
-    hidden_checkbox.button_pressed = quest.hidden
 
 func _on_required_checkbox_pressed():
     quest.required = required_checkbox.button_pressed
