@@ -37,9 +37,14 @@ func _clear():
     graph_edit.set_quest(null)
 
 func _edit(quest):
-    prints("Editing", quest, quest.name if quest else "")
     if not quest:
         _clear()
+        return
+    # If you inspect the resource that was just loaded the object will be loaded again
+    # If you inspect any other object before this main one, then it never gets reloaded
+    # even if you select the main object again. I think this must be a bug. Workaround
+    # for now is just don't honour the edit request if we already have this quest loaded
+    if quest == graph_edit.quest:
         return
 
     graph_edit.set_quest(quest)

@@ -12,10 +12,38 @@ enum SlotType {
     Action = 3,
 }
 
+enum QuestInputPort {
+    Parent = 0,
+}
+
+enum QuestOutputPort {
+    Conditions = 0,
+    Subquests = 1,
+}
+
+enum ConditionInputPort {
+    Quest = 0,
+}
+
+enum ConditionOutputPort {
+    Actions = 0,
+}
+
+enum ActionInputPort {
+    Trigger = 0,
+}
+
+enum ActionOutputPort {
+    Target = 0,
+}
+
 @export var quest: Quest: set = set_quest
 
 @onready var breadcrumb := %Breadcrumb
 @onready var graph_edit := %GraphEdit
+
+var nodes_by_object = {}
+var selected_nodes = {}
 
 func breadcrumb_string(q) -> String:
     var accum = ''
@@ -29,9 +57,11 @@ func save():
 
 func clear_all():
     graph_edit.clear_connections()
+    selected_nodes.clear()
     var children = graph_edit.get_children().duplicate()
     for node in children:
         graph_edit.remove_child(node)
+    nodes_by_object.clear()
 
 func set_quest(new_quest: Quest):
     quest = new_quest
@@ -41,7 +71,7 @@ func set_quest(new_quest: Quest):
 
     clear_all()
     breadcrumb.text = breadcrumb_string(quest)
-    create_quest_graph_nodes(quest)
+    var quest_node = create_quest_graph_nodes(quest)
 
 func _on_node_dragged(from: Vector2, to: Vector2, node: GraphNode):
     node.get_meta("object").editor_pos = to
@@ -53,12 +83,23 @@ func create_graph_node(type, object) -> GraphNode:
     node.position_offset = object.editor_pos
     return node
 
-func create_quest_graph_nodes(quest: Quest):
+func create_quest_graph_nodes(quest: Quest) -> QuestGraphNode:
     var quest_node = create_quest_node(quest)
     graph_edit.add_child(quest_node)
+    nodes_by_object[quest] = quest_node
+
+    if quest.parent:
+        graph_edit.connect_node(
+            nodes_by_object[quest.parent].name,
+            QuestOutputPort.Subquests,
+            quest_node.name,
+            QuestInputPort.Parent,
+        )
 
     for subquest in quest.subquests:
         create_quest_graph_nodes(subquest)
+
+    return quest_node
 
 func create_quest_node(quest) -> QuestGraphNode:
     var quest_node := create_graph_node(QuestGraphNodeScene, quest) as QuestGraphNode
@@ -66,3 +107,23 @@ func create_quest_node(quest) -> QuestGraphNode:
     quest_node.quest = quest
     quest_node.set_meta("quest", quest)
     return quest_node
+
+
+func _on_graph_edit_node_selected(node:Node):
+    selected_nodes[node] = true
+    if selected_nodes.size() != 1:
+        return
+
+    var object = node.get_meta("object")
+    inspect.emit(object)
+
+
+func _on_graph_edit_node_deselected(node:Node):
+    selected_nodes.erase(node)
+    if selected_nodes.size() ==  1:
+        var sel_node = selected_nodes.keys()[0]
+        inspect.emit(sel_node.get_meta("object"))
+        return
+
+    if not selected_nodes.size():
+        inspect.emit(quest)

@@ -10,6 +10,7 @@ active = false
 always = false
 passed = false
 actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+editor_pos = Vector2(0, 0)
 
 [sub_resource type="Resource" id="Resource_v84vv"]
 script = ExtResource("1_lxhw2")
@@ -18,6 +19,7 @@ active = false
 always = false
 passed = false
 actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+editor_pos = Vector2(0, 0)
 
 [sub_resource type="Resource" id="Resource_wsv8n"]
 script = ExtResource("1_lxhw2")
@@ -26,6 +28,7 @@ active = false
 always = false
 passed = false
 actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+editor_pos = Vector2(0, 0)
 
 [sub_resource type="Resource" id="Resource_mqf10"]
 script = ExtResource("1_lxhw2")
@@ -34,6 +37,7 @@ active = false
 always = false
 passed = false
 actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+editor_pos = Vector2(0, 0)
 
 [sub_resource type="Resource" id="Resource_mqgmm"]
 script = ExtResource("1_k7a25")
@@ -47,6 +51,7 @@ hidden = false
 tracking = false
 complete = false
 outcome = 0
+editor_pos = Vector2(340, 340)
 
 [sub_resource type="Resource" id="Resource_lyjdx"]
 script = ExtResource("1_k7a25")
@@ -60,6 +65,7 @@ hidden = false
 tracking = false
 complete = false
 outcome = 0
+editor_pos = Vector2(400, 180)
 
 [resource]
 script = ExtResource("1_k7a25")
@@ -73,3 +79,4 @@ hidden = false
 tracking = false
 complete = false
 outcome = 0
+editor_pos = Vector2(120, 260)
