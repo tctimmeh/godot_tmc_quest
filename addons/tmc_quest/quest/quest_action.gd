@@ -3,5 +3,7 @@
 class_name QuestAction
 extends Resource
 
+@export var editor_pos := Vector2()
+
 func execute():
     pass

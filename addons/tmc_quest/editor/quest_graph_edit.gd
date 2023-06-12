@@ -43,6 +43,16 @@ func set_quest(new_quest: Quest):
     breadcrumb.text = breadcrumb_string(quest)
     create_quest_graph_nodes(quest)
 
+func _on_node_dragged(from: Vector2, to: Vector2, node: GraphNode):
+    node.get_meta("object").editor_pos = to
+
+func create_graph_node(type, object) -> GraphNode:
+    var node = type.instantiate() as GraphNode
+    node.dragged.connect(_on_node_dragged.bind(node))
+    node.set_meta("object", object)
+    node.position_offset = object.editor_pos
+    return node
+
 func create_quest_graph_nodes(quest: Quest):
     var quest_node = create_quest_node(quest)
     graph_edit.add_child(quest_node)
@@ -51,9 +61,8 @@ func create_quest_graph_nodes(quest: Quest):
         create_quest_graph_nodes(subquest)
 
 func create_quest_node(quest) -> QuestGraphNode:
-    var quest_node = QuestGraphNodeScene.instantiate()
+    var quest_node := create_graph_node(QuestGraphNodeScene, quest) as QuestGraphNode
     # quest_node.context_requested.connect(_on_graph_node_context_requested.bind(quest_node))
     quest_node.quest = quest
     quest_node.set_meta("quest", quest)
-    quest_node.set_meta("object", quest)
     return quest_node

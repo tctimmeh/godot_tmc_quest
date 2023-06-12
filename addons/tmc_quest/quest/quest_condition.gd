@@ -19,6 +19,8 @@ extends Resource
 
 @export var actions: Array[QuestAction]
 
+@export var editor_pos := Vector2()
+
 func _check() -> bool:
     # Implement this to check your condition
     return passed
