@@ -33,11 +33,13 @@ var parent: Quest:
 @export var complete: bool = false
 @export var outcome: QuestOutcome
 
+@export var editor_pos := Vector2()
+
 static func outcomes():
     return QuestOutcome
 
-func _to_string():
-    return "<Quest: %s, done=%s>" % [name, complete]
+# func _to_string():
+#     return "<Quest: %s, active=%s>" % [name, complete]
 
 func set_subquests(quests: Array[Quest]):
     subquests = quests
@@ -45,20 +47,21 @@ func set_subquests(quests: Array[Quest]):
 
 func set_subquest_parents():
     for quest in subquests:
-        if not quest: # this can happen in the inspector when a new subquest is added
+        if not quest: # this can happen when a new subquest is added in the inspector
             continue  # the inspector adds a null until you fill it with an object
+
         quest.parent = self
         quest.set_subquest_parents()
 
-func add_subquest(quest):
+func add_subquest(quest: Quest):
     quest.parent = self
     subquests.append(quest)
 
-func remove_subquest(quest):
+func remove_subquest(quest: Quest):
     quest.parent = null
     subquests.erase(quest)
 
-func add_condition(condition):
+func add_condition(condition: QuestCondition):
     conditions.append(condition)
     if active and is_branch_active():
         condition.activate()
@@ -67,7 +70,7 @@ func remove_condition(condition: QuestCondition):
     condition.deactivate()
     conditions.erase(condition)
 
-func is_branch_active():
+func is_branch_active() -> bool:
 # Is this branch of the quest tree fully active (this and all ancestors active)
     if not active:
         return false
@@ -81,7 +84,7 @@ func activate_conditions():
     for condition in conditions:
         condition.activate()
 
-func deactivate_conditions(normal_only=false):
+func deactivate_conditions(normal_only := false):
     for condition in conditions:
         if normal_only and condition.always:
             continue
@@ -143,7 +146,7 @@ func advance():
 
     check_for_success()
 
-func has_always_conditions():
+func has_always_conditions() -> bool:
     var f = func is_always(x): return x.always
     return conditions.any(f)
 

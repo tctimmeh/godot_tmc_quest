@@ -28,5 +28,7 @@ fit_content = true
 scroll_active = false
 
 [node name="GraphEdit" type="GraphEdit" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+scroll_offset = Vector2(-100, -100)

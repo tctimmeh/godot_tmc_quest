@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=9 format=3 uid="uid://lmv1tsqwh6y6"]
+
+[ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="1_k7a25"]
+[ext_resource type="Script" path="res://addons/tmc_quest/quest/conditions/signal_condition.gd" id="1_lxhw2"]
+
+[sub_resource type="Resource" id="Resource_1lgdi"]
+script = ExtResource("1_lxhw2")
+required = true
+active = false
+always = false
+passed = false
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+
+[sub_resource type="Resource" id="Resource_v84vv"]
+script = ExtResource("1_lxhw2")
+required = true
+active = false
+always = false
+passed = false
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+
+[sub_resource type="Resource" id="Resource_wsv8n"]
+script = ExtResource("1_lxhw2")
+required = true
+active = false
+always = false
+passed = false
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+
+[sub_resource type="Resource" id="Resource_mqf10"]
+script = ExtResource("1_lxhw2")
+required = true
+active = false
+always = false
+passed = false
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
+
+[sub_resource type="Resource" id="Resource_mqgmm"]
+script = ExtResource("1_k7a25")
+name = "Wink"
+description = ""
+subquests = Array[ExtResource("1_k7a25")]([])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([SubResource("Resource_wsv8n"), SubResource("Resource_mqf10")])
+required = true
+active = false
+hidden = false
+tracking = false
+complete = false
+outcome = 0
+
+[sub_resource type="Resource" id="Resource_lyjdx"]
+script = ExtResource("1_k7a25")
+name = "Buddy"
+description = "OH BUDDY!"
+subquests = Array[ExtResource("1_k7a25")]([])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
+required = true
+active = false
+hidden = false
+tracking = false
+complete = false
+outcome = 0
+
+[resource]
+script = ExtResource("1_k7a25")
+name = "Debby"
+description = ""
+subquests = Array[ExtResource("1_k7a25")]([SubResource("Resource_mqgmm"), SubResource("Resource_lyjdx")])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([SubResource("Resource_1lgdi"), SubResource("Resource_v84vv")])
+required = true
+active = false
+hidden = false
+tracking = false
+complete = false
+outcome = 0

@@ -37,6 +37,7 @@ func _clear():
     graph_edit.set_quest(null)
 
 func _edit(quest):
+    prints("Editing", quest, quest.name if quest else "")
     if not quest:
         _clear()
         return

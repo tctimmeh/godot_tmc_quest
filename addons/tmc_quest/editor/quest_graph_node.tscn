@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://8hlgolp3qlun"]
+
+[ext_resource type="PackedScene" uid="uid://dmdvhjttpygkx" path="res://addons/tmc_quest/editor/base_graph_node.tscn" id="1_nqj48"]
+[ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_node.gd" id="2_hdj63"]
+
+[node name="QuestGraphNode" instance=ExtResource("1_nqj48")]
+title = "Quest"
+slot/1/left_enabled = true
+slot/1/left_type = 1
+slot/1/left_color = Color(0.133333, 0.733333, 0.0666667, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = true
+slot/3/right_type = 2
+slot/3/right_color = Color(0, 0.6, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = true
+slot/4/right_type = 1
+slot/4/right_color = Color(0.133333, 0.733333, 0.0666667, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+script = ExtResource("2_hdj63")
+
+[node name="ParentLabel" type="Label" parent="." index="1"]
+layout_mode = 2
+text = "Parent"
+
+[node name="BasicControls" type="HBoxContainer" parent="." index="2"]
+layout_mode = 2
+
+[node name="ConditionsLabel" type="Label" parent="." index="3"]
+layout_mode = 2
+text = "Conditions"
+horizontal_alignment = 2
+
+[node name="SubquestsLabel" type="Label" parent="." index="4"]
+layout_mode = 2
+text = "Subquests"
+horizontal_alignment = 2

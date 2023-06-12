@@ -3,16 +3,35 @@ extends Control
 
 signal inspect(object)
 
+const QuestGraphNodeScene := preload("res://addons/tmc_quest/editor/quest_graph_node.tscn")
+const QuestGraphNode := preload("res://addons/tmc_quest/editor/quest_graph_node.gd")
+
+enum SlotType {
+    SubQuest = 1,
+    Condition = 2,
+    Action = 3,
+}
+
 @export var quest: Quest: set = set_quest
 
 @onready var breadcrumb := %Breadcrumb
+@onready var graph_edit := %GraphEdit
 
-func parent_string(q) -> String:
+func breadcrumb_string(q) -> String:
     var accum = ''
     if q.parent:
-        accum += "%s > " % parent_string(q.parent)
+        accum += '[url="%s"]%s[/url] > ' % [q.parent.name, breadcrumb_string(q.parent)]
     accum += q.name
     return accum
+
+func save():
+    pass
+
+func clear_all():
+    graph_edit.clear_connections()
+    var children = graph_edit.get_children().duplicate()
+    for node in children:
+        graph_edit.remove_child(node)
 
 func set_quest(new_quest: Quest):
     quest = new_quest
@@ -20,7 +39,21 @@ func set_quest(new_quest: Quest):
         breadcrumb.text = ""
         return
 
-    breadcrumb.text = parent_string(quest)
+    clear_all()
+    breadcrumb.text = breadcrumb_string(quest)
+    create_quest_graph_nodes(quest)
 
-func save():
-    pass
+func create_quest_graph_nodes(quest: Quest):
+    var quest_node = create_quest_node(quest)
+    graph_edit.add_child(quest_node)
+
+    for subquest in quest.subquests:
+        create_quest_graph_nodes(subquest)
+
+func create_quest_node(quest) -> QuestGraphNode:
+    var quest_node = QuestGraphNodeScene.instantiate()
+    # quest_node.context_requested.connect(_on_graph_node_context_requested.bind(quest_node))
+    quest_node.quest = quest
+    quest_node.set_meta("quest", quest)
+    quest_node.set_meta("object", quest)
+    return quest_node
