@@ -17,3 +17,4 @@ mono_crash.*.json
 # Vim
 *.swp
 
+addons/tmc_quest/.editor/

@@ -11,7 +11,13 @@ enum QuestOutcome {
 @export var name: String = "New Quest"
 @export_multiline var description: String
 
-var parent
+var _parent: WeakRef
+var parent: Quest:
+    get:
+        return _parent.get_ref() if _parent else null
+    set(val):
+        _parent = weakref(val)
+
 @export var subquests: Array[Quest]: set = set_subquests
 @export var conditions: Array[QuestCondition]
 
@@ -38,14 +44,14 @@ func set_subquests(quests: Array[Quest]):
     set_subquest_parents()
 
 func set_subquest_parents():
-    var weak_self = weakref(self)
     for quest in subquests:
-        quest.parent = weak_self
+        if not quest: # this can happen in the inspector when a new subquest is added
+            continue  # the inspector adds a null until you fill it with an object
+        quest.parent = self
         quest.set_subquest_parents()
 
 func add_subquest(quest):
-    var weak_self = weakref(self)
-    quest.parent = weak_self
+    quest.parent = self
     subquests.append(quest)
 
 func remove_subquest(quest):
@@ -69,7 +75,7 @@ func is_branch_active():
     if not parent:
         return active
 
-    return parent.get_ref().is_branch_active()
+    return parent.is_branch_active()
 
 func activate_conditions():
     for condition in conditions:
