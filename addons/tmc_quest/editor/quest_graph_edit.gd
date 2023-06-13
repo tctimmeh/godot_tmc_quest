@@ -150,6 +150,7 @@ func create_quest_node(quest: Quest) -> QuestGraphNode:
     return node
 
 func _on_graph_edit_node_selected(node:Node):
+    node.overlay = GraphNode.OVERLAY_BREAKPOINT
     selected_nodes[node] = true
     if selected_nodes.size() != 1:
         return
@@ -158,6 +159,7 @@ func _on_graph_edit_node_selected(node:Node):
     inspect.emit(object)
 
 func _on_graph_edit_node_deselected(node:Node):
+    node.overlay = GraphNode.OVERLAY_DISABLED
     selected_nodes.erase(node)
     if selected_nodes.size() ==  1:
         var sel_node = selected_nodes.keys()[0]

@@ -8,6 +8,8 @@ var quest: Quest: set = set_quest
 @onready var hidden_checkbox := %HiddenCheckbox
 
 func _process(delta):
+    if not quest:
+        return
     title = quest.name
     required_checkbox.button_pressed = quest.required
     active_checkbox.button_pressed = quest.active

@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://addons/tmc_quest/editor/quest_graph_node.gd" id="2_hdj63"]
 
 [node name="QuestGraphNode" instance=ExtResource("1_nqj48")]
+theme_type_variation = &"QuestNode"
 title = "Quest"
 slot/1/left_enabled = true
 slot/1/left_type = 1

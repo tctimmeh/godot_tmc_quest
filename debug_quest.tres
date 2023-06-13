@@ -11,7 +11,7 @@ active = false
 always = false
 passed = false
 actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
-editor_pos = Vector2(620, 340)
+editor_pos = Vector2(600, 300)
 
 [sub_resource type="Resource" id="Resource_pivwx"]
 script = ExtResource("2_26v8k")

@@ -7,6 +7,8 @@ var condition: QuestCondition: set = set_condition
 @onready var always_checkbox := %AlwaysCheckbox
 
 func _process(delta):
+    if not condition:
+        return
     required_checkbox.button_pressed = condition.required
     always_checkbox.button_pressed = condition.always
 
