@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=2 format=3 uid="uid://ea2xn40q6152"]
+[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://ea2xn40q6152"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="1_nvoyi"]
+[ext_resource type="Script" path="res://addons/tmc_quest/quest/actions/console_action.gd" id="2_od0qm"]
+[ext_resource type="Script" path="res://addons/tmc_quest/quest/conditions/signal_condition.gd" id="3_xns16"]
 
-[resource]
+[sub_resource type="Resource" id="Resource_vbdst"]
 script = ExtResource("1_nvoyi")
 name = "New Quest"
 description = ""
@@ -14,4 +16,73 @@ hidden = false
 tracking = false
 complete = false
 outcome = 0
-editor_pos = Vector2(180, 180)
+editor_pos = Vector2(740, 80)
+
+[sub_resource type="Resource" id="Resource_wj3a2"]
+script = ExtResource("1_nvoyi")
+name = "New Quest"
+description = ""
+subquests = Array[ExtResource("1_nvoyi")]([SubResource("Resource_vbdst")])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
+required = true
+active = false
+hidden = false
+tracking = false
+complete = false
+outcome = 0
+editor_pos = Vector2(420, 40)
+
+[sub_resource type="Resource" id="Resource_8xqnf"]
+script = ExtResource("2_od0qm")
+editor_pos = Vector2(564, 588.4)
+
+[sub_resource type="Resource" id="Resource_gvpu3"]
+script = ExtResource("3_xns16")
+required = true
+active = false
+always = false
+passed = false
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([SubResource("Resource_8xqnf")])
+editor_pos = Vector2(399, 463.4)
+
+[sub_resource type="Resource" id="Resource_sdxxk"]
+script = ExtResource("1_nvoyi")
+name = "New Quest"
+description = ""
+subquests = Array[ExtResource("1_nvoyi")]([])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([SubResource("Resource_gvpu3")])
+required = true
+active = false
+hidden = false
+tracking = false
+complete = false
+outcome = 0
+editor_pos = Vector2(192, 438.4)
+
+[sub_resource type="Resource" id="Resource_rg56c"]
+script = ExtResource("1_nvoyi")
+name = "New Quest"
+description = ""
+subquests = Array[ExtResource("1_nvoyi")]([SubResource("Resource_sdxxk")])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
+required = true
+active = false
+hidden = false
+tracking = false
+complete = false
+outcome = 0
+editor_pos = Vector2(560, 200)
+
+[resource]
+script = ExtResource("1_nvoyi")
+name = "Root Quest"
+description = ""
+subquests = Array[ExtResource("1_nvoyi")]([SubResource("Resource_wj3a2"), SubResource("Resource_rg56c")])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([])
+required = true
+active = false
+hidden = false
+tracking = false
+complete = false
+outcome = 0
+editor_pos = Vector2(80, 140)
