@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://ksop5q6vnt5o"]
+
+[ext_resource type="PackedScene" uid="uid://dmdvhjttpygkx" path="res://addons/tmc_quest/editor/base_graph_node.tscn" id="1_40j8e"]
+[ext_resource type="Script" path="res://addons/tmc_quest/editor/condition_graph_node.gd" id="2_5tn3p"]
+
+[node name="ConditionGraphNode" instance=ExtResource("1_40j8e")]
+title = "Condition"
+slot/1/left_enabled = true
+slot/1/left_type = 2
+slot/1/left_color = Color(0, 0.6, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = true
+slot/3/right_type = 3
+slot/3/right_color = Color(0.866667, 0.12549, 0.12549, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+script = ExtResource("2_5tn3p")
+
+[node name="QuestLabel" type="Label" parent="." index="1"]
+layout_mode = 2
+text = "Quest"
+
+[node name="BasicControls" type="HBoxContainer" parent="." index="2"]
+layout_mode = 2
+
+[node name="ActionsLabel" type="Label" parent="." index="3"]
+layout_mode = 2
+text = "Actions"
+horizontal_alignment = 2

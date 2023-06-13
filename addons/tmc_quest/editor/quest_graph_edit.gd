@@ -5,6 +5,8 @@ signal inspect(object)
 
 const QuestGraphNodeScene := preload("res://addons/tmc_quest/editor/quest_graph_node.tscn")
 const QuestGraphNode := preload("res://addons/tmc_quest/editor/quest_graph_node.gd")
+const ConditionGraphNodeScene := preload("res://addons/tmc_quest/editor/condition_graph_node.tscn")
+const ConditionGraphNode := preload("res://addons/tmc_quest/editor/condition_graph_node.gd")
 
 enum SlotType {
     SubQuest = 1,
@@ -78,6 +80,8 @@ func _on_node_dragged(from: Vector2, to: Vector2, node: GraphNode):
 
 func create_graph_node(type, object) -> GraphNode:
     var node = type.instantiate() as GraphNode
+    nodes_by_object[object] = node
+
     node.dragged.connect(_on_node_dragged.bind(node))
     node.set_meta("object", object)
     node.position_offset = object.editor_pos
@@ -86,7 +90,6 @@ func create_graph_node(type, object) -> GraphNode:
 func create_quest_graph_nodes(quest: Quest) -> QuestGraphNode:
     var quest_node = create_quest_node(quest)
     graph_edit.add_child(quest_node)
-    nodes_by_object[quest] = quest_node
 
     if quest.parent:
         graph_edit.connect_node(
@@ -99,15 +102,36 @@ func create_quest_graph_nodes(quest: Quest) -> QuestGraphNode:
     for subquest in quest.subquests:
         create_quest_graph_nodes(subquest)
 
+    create_condition_nodes(quest)
+
     return quest_node
 
-func create_quest_node(quest) -> QuestGraphNode:
-    var quest_node := create_graph_node(QuestGraphNodeScene, quest) as QuestGraphNode
-    # quest_node.context_requested.connect(_on_graph_node_context_requested.bind(quest_node))
-    quest_node.quest = quest
-    quest_node.set_meta("quest", quest)
-    return quest_node
+func create_condition_nodes(quest: Quest):
+    for condition in quest.conditions:
+        var node = create_condition_node(condition, quest)
+        graph_edit.add_child(node)
 
+        graph_edit.connect_node(
+            nodes_by_object[quest].name,
+            QuestOutputPort.Conditions,
+            node.name,
+            ConditionInputPort.Quest
+        )
+
+        # create_action_graph_nodes(condition, condition_node, position)
+
+func create_condition_node(condition: QuestCondition, quest: Quest):
+    var node := create_graph_node(ConditionGraphNodeScene, condition) as ConditionGraphNode
+    node.condition = condition
+    node.set_meta("quest", quest)
+    node.set_meta("condition", condition)
+    return node
+
+func create_quest_node(quest: Quest) -> QuestGraphNode:
+    var node := create_graph_node(QuestGraphNodeScene, quest) as QuestGraphNode
+    node.quest = quest
+    node.set_meta("quest", quest)
+    return node
 
 func _on_graph_edit_node_selected(node:Node):
     selected_nodes[node] = true
