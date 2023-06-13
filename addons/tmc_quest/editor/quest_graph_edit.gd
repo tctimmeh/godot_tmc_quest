@@ -161,7 +161,6 @@ func _on_graph_edit_node_selected(node:Node):
     var object = node.get_meta("object")
     inspect.emit(object)
 
-
 func _on_graph_edit_node_deselected(node:Node):
     selected_nodes.erase(node)
     if selected_nodes.size() ==  1:
@@ -171,3 +170,55 @@ func _on_graph_edit_node_deselected(node:Node):
 
     if not selected_nodes.size():
         inspect.emit(quest)
+
+func _on_graph_edit_connection_request(from_node_name:StringName, from_port:int, to_node_name:StringName, to_port:int):
+    var from_node = graph_edit.get_node(str(from_node_name))
+    var to_node = graph_edit.get_node(str(to_node_name))
+
+    if from_node is QuestGraphNode:
+        var from_quest = from_node.get_meta("quest") as Quest
+        if to_node is QuestGraphNode:
+            var to_quest = to_node.get_meta("quest") as Quest
+            if to_quest.parent:
+                return
+            from_quest.add_subquest(to_quest)
+        elif to_node is ConditionGraphNode:
+            var to_condition = to_node.get_meta("condition") as QuestCondition
+            from_quest.add_condition(to_condition)
+    elif from_node is ConditionGraphNode:
+        var from_condition = from_node.get_meta("condition") as QuestCondition
+        if to_node is ActionGraphNode:
+            var to_action = to_node.get_meta("action") as QuestAction
+            from_condition.add_action(to_action)
+    elif from_node is ActionGraphNode:
+        var from_action = from_node.get_meta("action") as QuestAction
+        if to_node is ActionGraphNode:
+            var to_action = to_node.get_meta("action") as QuestAction
+            # TODO:: connect this action to the other action
+        if to_node is QuestGraphNode:
+            var to_quest = to_node.get_meta("quest") as Quest
+            # TODO:: connect this action to the quest
+
+    graph_edit.connect_node(from_node_name, from_port, to_node_name, to_port)
+
+func _on_graph_edit_disconnection_request(from_node_name:StringName, from_port:int, to_node_name:StringName, to_port:int):
+    var parent_node = graph_edit.get_node(str(from_node_name))
+    var to_node = graph_edit.get_node(str(to_node_name))
+
+    if parent_node is QuestGraphNode:
+        var from_quest = parent_node.get_meta("quest") as Quest
+        if from_port == QuestOutputPort.Subquests:
+            var to_quest = to_node.get_meta("quest") as Quest
+            from_quest.remove_subquest(to_quest)
+        elif from_port == QuestOutputPort.Conditions:
+            var to_condition = to_node.get_meta("condition")
+            from_quest.remove_condition(to_condition)
+
+    elif parent_node is ConditionGraphNode:
+        var from_condition = parent_node.get_meta("condition") as QuestCondition
+        var to_action = to_node.get_meta("action") as QuestAction
+        from_condition.remove_action(to_action)
+    # elif parent_node is ActionGraphNodeClass:
+    #     pass # disconnect a quest from this action
+
+    graph_edit.disconnect_node(from_node_name, from_port, to_node_name, to_port)
