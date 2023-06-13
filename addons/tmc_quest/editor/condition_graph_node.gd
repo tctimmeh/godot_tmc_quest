@@ -11,6 +11,7 @@ func _process(delta):
         return
     required_checkbox.button_pressed = condition.required
     always_checkbox.button_pressed = condition.always
+    set_node_active(condition.active)
 
 func set_condition(new_condition: QuestCondition):
     condition = new_condition

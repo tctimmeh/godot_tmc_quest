@@ -14,6 +14,7 @@ func _process(delta):
     required_checkbox.button_pressed = quest.required
     active_checkbox.button_pressed = quest.active
     hidden_checkbox.button_pressed = quest.hidden
+    set_node_active(quest.active)
 
 func set_quest(new_quest: Quest):
     quest = new_quest

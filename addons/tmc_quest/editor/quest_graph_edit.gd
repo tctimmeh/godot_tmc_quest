@@ -69,9 +69,9 @@ func clear_all():
     nodes_by_object.clear()
 
 func set_quest(new_quest: Quest):
+    prints("setting quest", new_quest)
     quest = new_quest
     if not quest:
-        breadcrumb.text = ""
         return
 
     clear_all()
