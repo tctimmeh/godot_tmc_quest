@@ -79,8 +79,9 @@ func set_quest(new_quest: Quest):
     if not quest:
         return
 
-    %SimulateButton.button_pressed = false
-    _on_simulate_button_toggled(false)
+    if simulating:
+        %SimulateButton.button_pressed = false
+        _on_simulate_button_toggled(false)
 
     clear_all()
     breadcrumb.text = breadcrumb_string(quest)
