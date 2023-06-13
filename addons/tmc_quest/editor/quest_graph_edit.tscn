@@ -38,6 +38,7 @@ unique_name_in_owner = true
 
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="connection_to_empty" from="GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
+[connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
 [connection signal="node_deselected" from="GraphEdit" to="." method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="GraphEdit" to="." method="_on_graph_edit_node_selected"]

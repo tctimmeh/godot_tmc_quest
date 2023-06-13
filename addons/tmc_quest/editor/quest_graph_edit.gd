@@ -296,3 +296,45 @@ func _on_type_select_menu_index_pressed(index):
     if new_object is QuestAction:
         parent_object.add_action(new_object)
         create_action_node(new_object, parent_object)
+
+func _on_graph_edit_delete_nodes_request(nodes:Array):
+    var nodes_to_delete = selected_nodes.keys()
+    for node in nodes_to_delete:
+        delete_node(node)
+
+func delete_node(node):
+    var connections = graph_edit.get_connection_list()
+    var object = node.get_meta("object")
+    selected_nodes.erase(node)
+
+    if object is Quest:
+        if object.parent:
+            object.parent.remove_subquest(object)
+        for subquest in object.subquests:
+            subquest.parent = null
+    elif object is QuestCondition:
+        var quest = node.get_meta("quest")
+        quest.remove_condition(object)
+    elif object is QuestAction:
+        var triggers = connections.filter(func(c): return c["to"] == node.name)
+        for trigger in triggers:
+            var trigger_node = graph_edit.get_node(str(trigger["from"]))
+            var trigger_obj
+            if trigger_node is ConditionGraphNode:
+                trigger_obj = trigger_node.get_meta("condition")
+            elif trigger_node is ActionGraphNode:
+                trigger_obj = trigger_node.get_meta("action")
+            trigger_obj.remove_action(object)
+    else:
+        print_debug("Deleting unknown node type")
+
+    for connection in connections:
+        if connection['from'] == node.name or connection['to'] == node.name:
+            graph_edit.disconnect_node(
+                connection['from'],
+                connection['from_port'],
+                connection['to'],
+                connection['to_port'],
+            )
+
+    graph_edit.remove_child(node)

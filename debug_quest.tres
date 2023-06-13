@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=9 format=3 uid="uid://bb4whv8dpw4h"]
+[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://bb4whv8dpw4h"]
 
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/quest.gd" id="1_g8x8d"]
 [ext_resource type="Script" path="res://addons/tmc_quest/quest/conditions/signal_condition.gd" id="2_1pjhk"]
@@ -13,12 +13,25 @@ passed = false
 actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
 editor_pos = Vector2(620, 340)
 
+[sub_resource type="Resource" id="Resource_pivwx"]
+script = ExtResource("2_26v8k")
+editor_pos = Vector2(780, 480)
+
+[sub_resource type="Resource" id="Resource_qrwa6"]
+script = ExtResource("2_1pjhk")
+required = true
+active = false
+always = false
+passed = false
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([SubResource("Resource_pivwx")])
+editor_pos = Vector2(560, 500)
+
 [sub_resource type="Resource" id="Resource_f1xgu"]
 script = ExtResource("1_g8x8d")
 name = "Get that murphy"
 description = "Well, that's a murphy. Get it!"
 subquests = Array[ExtResource("1_g8x8d")]([])
-conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([SubResource("Resource_jd8k1")])
+conditions = Array[Resource("res://addons/tmc_quest/quest/quest_condition.gd")]([SubResource("Resource_jd8k1"), SubResource("Resource_qrwa6")])
 required = false
 active = false
 hidden = true
@@ -27,17 +40,13 @@ complete = false
 outcome = 0
 editor_pos = Vector2(320, 240)
 
-[sub_resource type="Resource" id="Resource_1r17w"]
-script = ExtResource("2_26v8k")
-editor_pos = Vector2(900, 240)
-
 [sub_resource type="Resource" id="Resource_70sdd"]
 script = ExtResource("2_1pjhk")
 required = true
 active = true
 always = false
 passed = false
-actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([SubResource("Resource_1r17w")])
+actions = Array[Resource("res://addons/tmc_quest/quest/quest_action.gd")]([])
 editor_pos = Vector2(720, 160)
 
 [sub_resource type="Resource" id="Resource_h3nsu"]
