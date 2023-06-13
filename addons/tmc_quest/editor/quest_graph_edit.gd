@@ -56,9 +56,6 @@ func breadcrumb_string(q) -> String:
     accum += q.name
     return accum
 
-func save():
-    pass
-
 func clear_all():
     graph_edit.clear_connections()
     selected_nodes.clear()
@@ -222,3 +219,31 @@ func _on_graph_edit_disconnection_request(from_node_name:StringName, from_port:i
     #     pass # disconnect a quest from this action
 
     graph_edit.disconnect_node(from_node_name, from_port, to_node_name, to_port)
+
+func _on_graph_edit_connection_to_empty(from_node_name:StringName, from_port:int, release_position:Vector2):
+    var parent_node = graph_edit.get_node(str(from_node_name))
+    var grid_position = release_position_to_grid_position(release_position)
+
+    if parent_node is QuestGraphNode:
+        var from_quest = parent_node.get_meta("quest")
+        match from_port:
+            QuestOutputPort.Subquests:
+                new_subquest(from_quest, grid_position)
+            # QuestOutputPort.Conditions:
+            #     new_object_from_type_list(&"QuestCondition", DefaultConditionIcon, parent_node, grid_position)
+                # new_condition(parent_node, grid_position)
+    # elif parent_node is ConditionGraphNode:
+    #     # new_action(parent_node, grid_position)
+    #     new_object_from_type_list(&"QuestAction", DefaultActionIcon, parent_node, grid_position)
+
+func release_position_to_grid_position(release_position: Vector2):
+    var grid_pos = release_position / graph_edit.zoom
+    grid_pos += graph_edit.scroll_offset / graph_edit.zoom
+    return grid_pos
+
+func new_subquest(parent_quest: Quest, position: Vector2):
+    var new_quest = Quest.new()
+    new_quest.editor_pos = position
+    parent_quest.add_subquest(new_quest)
+    var node = create_quest_graph_nodes(new_quest)
+    node.position_offset = position
