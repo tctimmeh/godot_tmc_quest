@@ -10,6 +10,9 @@ const ConditionGraphNode := preload("res://addons/tmc_quest/editor/condition_gra
 const ActionGraphNodeScene := preload("res://addons/tmc_quest/editor/action_graph_node.tscn")
 const ActionGraphNode := preload("res://addons/tmc_quest/editor/action_graph_node.gd")
 
+const DefaultConditionIcon := preload("res://addons/tmc_quest/assets/condition_icon.svg")
+const DefaultActionIcon := preload("res://addons/tmc_quest/assets/action_icon.svg")
+
 enum SlotType {
     SubQuest = 1,
     Condition = 2,
@@ -45,6 +48,7 @@ enum ActionOutputPort {
 
 @onready var breadcrumb := %Breadcrumb
 @onready var graph_edit := %GraphEdit
+@onready var type_select_menu := %TypeSelectMenu
 
 var nodes_by_object = {}
 var selected_nodes = {}
@@ -101,7 +105,8 @@ func create_quest_graph_nodes(quest: Quest) -> QuestGraphNode:
     for subquest in quest.subquests:
         create_quest_graph_nodes(subquest)
 
-    create_condition_nodes(quest)
+    for condition in quest.conditions:
+        create_condition_node(condition, quest)
 
     return quest_node
 
@@ -110,39 +115,33 @@ func create_condition_node(condition: QuestCondition, quest: Quest):
     node.condition = condition
     node.set_meta("quest", quest)
     node.set_meta("condition", condition)
+    graph_edit.add_child(node)
+
+    graph_edit.connect_node(
+        nodes_by_object[quest].name,
+        QuestOutputPort.Conditions,
+        node.name,
+        ConditionInputPort.Quest
+    )
+
+    for action in condition.actions:
+        create_action_node(action, condition)
+
     return node
-
-func create_condition_nodes(quest: Quest):
-    for condition in quest.conditions:
-        var node = create_condition_node(condition, quest)
-        graph_edit.add_child(node)
-
-        graph_edit.connect_node(
-            nodes_by_object[quest].name,
-            QuestOutputPort.Conditions,
-            node.name,
-            ConditionInputPort.Quest
-        )
-
-        create_action_nodes(condition)
 
 func create_action_node(action: QuestAction, trigger):
     var node := create_graph_node(ActionGraphNodeScene, action) as ActionGraphNode
     node.action = action
     node.set_meta("action", action)
+    graph_edit.add_child(node)
+
+    graph_edit.connect_node(
+        nodes_by_object[trigger].name,
+        QuestOutputPort.Conditions,
+        node.name,
+        ConditionInputPort.Quest
+    )
     return node
-
-func create_action_nodes(trigger):
-    for action in trigger.actions:
-        var node = create_action_node(action, trigger)
-        graph_edit.add_child(node)
-
-        graph_edit.connect_node(
-            nodes_by_object[trigger].name,
-            QuestOutputPort.Conditions,
-            node.name,
-            ConditionInputPort.Quest
-        )
 
 func create_quest_node(quest: Quest) -> QuestGraphNode:
     var node := create_graph_node(QuestGraphNodeScene, quest) as QuestGraphNode
@@ -229,12 +228,11 @@ func _on_graph_edit_connection_to_empty(from_node_name:StringName, from_port:int
         match from_port:
             QuestOutputPort.Subquests:
                 new_subquest(from_quest, grid_position)
-            # QuestOutputPort.Conditions:
-            #     new_object_from_type_list(&"QuestCondition", DefaultConditionIcon, parent_node, grid_position)
-                # new_condition(parent_node, grid_position)
-    # elif parent_node is ConditionGraphNode:
-    #     # new_action(parent_node, grid_position)
-    #     new_object_from_type_list(&"QuestAction", DefaultActionIcon, parent_node, grid_position)
+            QuestOutputPort.Conditions:
+                new_object_from_type_list(&"QuestCondition", DefaultConditionIcon, from_quest, grid_position)
+    elif parent_node is ConditionGraphNode:
+        var from_condition = parent_node.get_meta("condition")
+        new_object_from_type_list(&"QuestAction", DefaultActionIcon, from_condition, grid_position)
 
 func release_position_to_grid_position(release_position: Vector2):
     var grid_pos = release_position / graph_edit.zoom
@@ -247,3 +245,54 @@ func new_subquest(parent_quest: Quest, position: Vector2):
     parent_quest.add_subquest(new_quest)
     var node = create_quest_graph_nodes(new_quest)
     node.position_offset = position
+
+func popup_menu_at_mouse(menu: PopupMenu):
+    menu.position = get_screen_position() + get_local_mouse_position()
+    menu.reset_size()
+    menu.popup()
+
+func new_object_from_type_list(baseType: StringName, defaultIcon: Texture2D, parent_object, position: Vector2):
+    var by_base = func(x): return x.base == baseType
+    var by_name = func(x): return x["class"]
+
+    var class_info = ProjectSettings.get_global_class_list()
+    var classes = class_info.filter(by_base)
+    classes.sort_custom(by_name)
+
+    type_select_menu.clear()
+    type_select_menu.set_meta("position", position)
+    type_select_menu.set_meta("parent_object", parent_object)
+    var index = 0
+    for cls_info in classes:
+        var base_name = str(cls_info["base"])
+        var item_name = str(cls_info["class"])
+        if item_name.ends_with(base_name):
+            item_name = item_name.replace(base_name, "")
+
+        type_select_menu.add_item(item_name)
+        type_select_menu.set_item_icon(
+            index,
+            load(cls_info["icon"]) if cls_info["icon"] else defaultIcon
+        )
+        type_select_menu.set_item_metadata(index, cls_info)
+        index += 1
+
+    popup_menu_at_mouse(type_select_menu)
+
+func _on_type_select_menu_index_pressed(index):
+    var parent_object = type_select_menu.get_meta("parent_object")
+    var parent_node = nodes_by_object[parent_object]
+
+    var cls_info = type_select_menu.get_item_metadata(index)
+    var cls = load(cls_info["path"])
+
+    var new_object = cls.new()
+    new_object.editor_pos = type_select_menu.get_meta("position")
+    var new_object_node
+
+    if new_object is QuestCondition:
+        parent_object.add_condition(new_object)
+        create_condition_node(new_object, parent_object)
+    if new_object is QuestAction:
+        parent_object.add_action(new_object)
+        create_action_node(new_object, parent_object)
