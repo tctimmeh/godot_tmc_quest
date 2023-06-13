@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://mc6lwgy3s1sl"]
+
+[ext_resource type="PackedScene" uid="uid://dmdvhjttpygkx" path="res://addons/tmc_quest/editor/base_graph_node.tscn" id="1_o2pae"]
+[ext_resource type="Script" path="res://addons/tmc_quest/editor/action_graph_node.gd" id="2_q5c0n"]
+
+[node name="ActionGraphNode" instance=ExtResource("1_o2pae")]
+title = "Action"
+slot/1/left_enabled = true
+slot/1/left_type = 3
+slot/1/left_color = Color(0.866667, 0.12549, 0.12549, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = true
+slot/2/right_type = 3
+slot/2/right_color = Color(0.866667, 0.12549, 0.12549, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+script = ExtResource("2_q5c0n")
+
+[node name="TriggerLabel" type="Label" parent="." index="1"]
+layout_mode = 2
+text = "Trigger"
+
+[node name="TargetLabel" type="Label" parent="." index="2"]
+layout_mode = 2
+text = "Target
+"
+horizontal_alignment = 2

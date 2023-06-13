@@ -14,3 +14,4 @@ hidden = false
 tracking = false
 complete = false
 outcome = 0
+editor_pos = Vector2(180, 180)
