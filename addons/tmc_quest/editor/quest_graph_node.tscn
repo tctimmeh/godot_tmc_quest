@@ -55,6 +55,11 @@ slot/5/right_icon = null
 slot/5/draw_stylebox = true
 script = ExtResource("2_hdj63")
 
+[node name="OutcomeLabel" type="Label" parent="Floating/SimControls" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Incomplete"
+
 [node name="ParentLabel" type="Label" parent="." index="1"]
 layout_mode = 2
 text = "Parent"

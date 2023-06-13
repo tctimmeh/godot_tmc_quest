@@ -18,3 +18,15 @@ script = ExtResource("1_glg7j")
 
 [node name="Floating" type="Control" parent="."]
 layout_mode = 2
+
+[node name="SimControls" type="HBoxContainer" parent="Floating"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -40.0
+offset_right = 15.0
+offset_bottom = -40.0

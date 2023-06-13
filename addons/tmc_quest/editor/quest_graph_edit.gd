@@ -52,6 +52,12 @@ enum ActionOutputPort {
 
 var nodes_by_object = {}
 var selected_nodes = {}
+var simulating = false
+
+func _process(delta):
+    if not quest or not simulating:
+        return
+    quest.advance()
 
 func breadcrumb_string(q) -> String:
     var accum = ''
@@ -69,10 +75,12 @@ func clear_all():
     nodes_by_object.clear()
 
 func set_quest(new_quest: Quest):
-    prints("setting quest", new_quest)
     quest = new_quest
     if not quest:
         return
+
+    %SimulateButton.button_pressed = false
+    _on_simulate_button_toggled(false)
 
     clear_all()
     breadcrumb.text = breadcrumb_string(quest)
@@ -340,3 +348,14 @@ func delete_node(node):
             )
 
     graph_edit.remove_child(node)
+
+func _on_simulate_button_toggled(button_pressed:bool):
+    simulating = button_pressed
+    if simulating:
+        %SimulateButton.text = "Simulating..."
+        for child in graph_edit.get_children():
+            child.start_simulation()
+    else:
+        %SimulateButton.text = "Simulate"
+        for child in graph_edit.get_children():
+            child.end_simulation()

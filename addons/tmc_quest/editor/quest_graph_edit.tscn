@@ -15,6 +15,7 @@ theme = ExtResource("1_2cqww")
 script = ExtResource("1_c1fis")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
@@ -29,25 +30,44 @@ text = "[url=bb]Breadcrumb[/url] > Next Thing > Whatever"
 fit_content = true
 scroll_active = false
 
-[node name="GraphEdit" type="GraphEdit" parent="."]
+[node name="Editor" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GraphEdit" type="GraphEdit" parent="Editor"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 right_disconnects = true
-scroll_offset = Vector2(-230.4, -124.2)
+scroll_offset = Vector2(-230.4, 0)
 zoom = 0.75
 zoom_min = 0.25
 zoom_max = 1.0
 zoom_step = 1.1
 show_zoom_label = true
 
+[node name="MarginContainer" type="MarginContainer" parent="Editor"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+
+[node name="SimulateButton" type="Button" parent="Editor/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+toggle_mode = true
+text = "Simulate"
+
 [node name="TypeSelectMenu" type="PopupMenu" parent="."]
 unique_name_in_owner = true
 
-[connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
-[connection signal="connection_to_empty" from="GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
-[connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
-[connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
-[connection signal="node_deselected" from="GraphEdit" to="." method="_on_graph_edit_node_deselected"]
-[connection signal="node_selected" from="GraphEdit" to="." method="_on_graph_edit_node_selected"]
+[connection signal="connection_request" from="Editor/GraphEdit" to="." method="_on_graph_edit_connection_request"]
+[connection signal="connection_to_empty" from="Editor/GraphEdit" to="." method="_on_graph_edit_connection_to_empty"]
+[connection signal="delete_nodes_request" from="Editor/GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
+[connection signal="disconnection_request" from="Editor/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
+[connection signal="node_deselected" from="Editor/GraphEdit" to="." method="_on_graph_edit_node_deselected"]
+[connection signal="node_selected" from="Editor/GraphEdit" to="." method="_on_graph_edit_node_selected"]
+[connection signal="toggled" from="Editor/MarginContainer/SimulateButton" to="." method="_on_simulate_button_toggled"]
 [connection signal="index_pressed" from="TypeSelectMenu" to="." method="_on_type_select_menu_index_pressed"]

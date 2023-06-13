@@ -37,6 +37,11 @@ slot/3/right_icon = null
 slot/3/draw_stylebox = true
 script = ExtResource("2_5tn3p")
 
+[node name="PassedCheckbox" type="CheckBox" parent="Floating/SimControls" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+
 [node name="QuestLabel" type="Label" parent="." index="1"]
 layout_mode = 2
 text = "Quest"
@@ -59,5 +64,6 @@ layout_mode = 2
 text = "Actions"
 horizontal_alignment = 2
 
+[connection signal="toggled" from="Floating/SimControls/PassedCheckbox" to="." method="_on_passed_checkbox_toggled"]
 [connection signal="toggled" from="BasicControls/RequiredCheckbox" to="." method="_on_required_checkbox_toggled"]
 [connection signal="toggled" from="BasicControls/AlwaysCheckbox" to="." method="_on_always_checkbox_toggled"]

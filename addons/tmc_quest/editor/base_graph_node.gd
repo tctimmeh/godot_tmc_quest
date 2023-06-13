@@ -10,3 +10,9 @@ func set_node_active(active):
         self_modulate = Color.WHITE
     else:
         self_modulate = Color("#ffffff99")
+
+func start_simulation():
+    %SimControls.show()
+
+func end_simulation():
+   %SimControls.hide()
