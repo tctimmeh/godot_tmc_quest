@@ -29,10 +29,10 @@ var parent: Quest:
         active = val
         _activated() if val else _deactivated()
 @export var hidden: bool = false
-@export var tracking: bool = false
+
+@export_group("Danger Zone")
 @export var complete: bool = false
 @export var outcome: QuestOutcome
-
 @export var editor_pos := Vector2(200,200)
 
 static func outcomes():
@@ -153,7 +153,6 @@ func has_always_conditions() -> bool:
 func pass_quest():
     outcome = QuestOutcome.Passed
     complete = true
-    tracking = false
 
     if has_always_conditions():
         deactivate_conditions(true)
