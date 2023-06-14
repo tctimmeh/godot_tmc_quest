@@ -35,6 +35,7 @@ func end_simulation():
     super()
     quest.outcome = Quest.QuestOutcome.Incomplete
     quest.active = active_before_simulation
+    quest.complete = false
 
 func _on_required_checkbox_toggled(button_pressed:bool):
     quest.required = button_pressed

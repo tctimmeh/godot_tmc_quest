@@ -25,6 +25,10 @@ func start_simulation():
     super()
     condition.passed = false
 
+func end_simulation():
+    super()
+    condition.passed = false
+
 func _on_passed_check_pressed():
     var passed = passed_checkbox.button_pressed
     if passed:
