@@ -53,6 +53,11 @@ enum ActionOutputPort {
 var nodes_by_object = {}
 var selected_nodes = {}
 var simulating = false
+var save_dialog: EditorFileDialog:
+    get:
+        if not save_dialog:
+            create_save_dialog()
+        return save_dialog
 
 func _process(delta):
     if not quest or not simulating:
@@ -65,6 +70,29 @@ func breadcrumb_string(q) -> String:
         accum += '[url="%s"]%s[/url] > ' % [q.parent.name, breadcrumb_string(q.parent)]
     accum += q.name
     return accum
+
+func save():
+    if not quest:
+        return
+    if not quest.resource_path.length():
+        save_dialog.popup_centered_ratio(0.75)
+        return
+    ResourceSaver.save(quest)
+
+func create_save_dialog():
+    save_dialog = EditorFileDialog.new()
+    save_dialog.name = "SaveDialog"
+    save_dialog.title = "Save Quest"
+    save_dialog.dialog_hide_on_ok = true
+    save_dialog.display_mode = EditorFileDialog.DISPLAY_LIST
+    save_dialog.file_mode = EditorFileDialog.FILE_MODE_SAVE_FILE
+    save_dialog.add_filter("*.tres", "Resources")
+    save_dialog.file_selected.connect(_on_save_dialog_file_selected)
+    add_child(save_dialog)
+
+func _on_save_dialog_file_selected(path):
+    quest.resource_path = path
+    ResourceSaver.save(quest)
 
 func clear_all():
     graph_edit.clear_connections()

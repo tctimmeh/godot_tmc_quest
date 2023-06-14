@@ -39,7 +39,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 right_disconnects = true
-scroll_offset = Vector2(-230.4, 0)
 zoom = 0.75
 zoom_min = 0.25
 zoom_max = 1.0

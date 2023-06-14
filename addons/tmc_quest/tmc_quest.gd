@@ -30,8 +30,8 @@ func _get_plugin_name():
 func _get_plugin_icon():
     return preload("res://addons/tmc_quest/assets/quest_icon.svg")
 
-# func _apply_changes():
-    # graph_edit.save()
+func _apply_changes():
+    graph_edit.save()
 
 func _clear():
     graph_edit.set_quest(null)

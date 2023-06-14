@@ -22,7 +22,7 @@ var parent: Quest:
 @export var conditions: Array[QuestCondition]
 
 @export var required: bool = true
-@export var active: bool = false:
+@export var active: bool = true:
     get:
         return active
     set(val):
@@ -33,7 +33,7 @@ var parent: Quest:
 @export var complete: bool = false
 @export var outcome: QuestOutcome
 
-@export var editor_pos := Vector2()
+@export var editor_pos := Vector2(200,200)
 
 static func outcomes():
     return QuestOutcome
